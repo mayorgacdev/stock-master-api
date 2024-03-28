@@ -1,4 +1,4 @@
-﻿namespace Training.Domain;
+﻿namespace Training.Domain.Inventory;
 
 /// <summary>
 /// Represents a price for a product in the SellNet domain.
