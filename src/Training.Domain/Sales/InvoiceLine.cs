@@ -1,8 +1,10 @@
-﻿namespace Training.Domain.Sales;
+﻿using Training.Domain.Inventory;
+
+namespace Training.Domain.Sales;
 
 public abstract class InvoiceLine
 {
-    public Guid ProductId { get; set; }
+    public Guid ProductId { get; set; } = Guid.Empty;
     public Guid InvoiceRecordId { get; private set; } = Guid.Empty;
     public string Description { get; private set; } = string.Empty;
     public int Quantity { get; private set; } = 1;

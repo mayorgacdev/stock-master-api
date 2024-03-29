@@ -1,4 +1,6 @@
-﻿namespace Training.Domain.Inventory;
+﻿using Training.Domain.Sales;
+
+namespace Training.Domain.Inventory;
 
 /// <summary>
 /// Represents a product in the SellNet domain.
@@ -22,11 +24,13 @@ public class Product : Entity
     /// </summary>
     public Guid WarehouseId { get; private set; }
 
+    public Warehouse Warehouse { get; private set; } = default!;
+
     /// <summary>
     /// Gets the unique identifier of the brand of the product.
     /// </summary>
     public Guid ProductBrandId { get; private set; }
-
+    
     /// <summary>
     /// Gets the unique identifier of the type of the product.
     /// </summary>
@@ -60,6 +64,8 @@ public class Product : Entity
         get => this.Currency.Amount(this.PurchasePriceAmount);
         private set => (this.PurchasePriceAmount, this.Currency) = (value.Amount, value.Currency);
     }
+
+
 
     private decimal PurchasePriceAmount { get; set; } // Used by EF Core
 

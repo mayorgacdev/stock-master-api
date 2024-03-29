@@ -18,21 +18,36 @@ public class Warehouse : Entity
     public string City { get; private set; } = string.Empty;
 
     /// <summary>
+    /// Gets the capacity of the warehouse.
+    /// </summary>
+    public int Capacity { get; private set; } = 0;
+
+    /// <summary>
     /// Products stored in the warehouse.
     /// </summary>
     public ICollection<Product> Products { get; private set; } = new List<Product>();
-    
+
     /// <summary>
     /// Creates a new instance of the Warehouse class.
     /// </summary>
     /// <param name="state"></param>
     /// <param name="city"></param>
     /// <returns></returns>
-    public static Warehouse Create(string state, string city)
+    public static Warehouse Create(string state, string city, int capacity)
         => new()
         {
             Id = Guid.NewGuid(),
             State = state,
-            City = city
+            City = city,
+            Capacity = capacity
+        };
+
+    public static Warehouse CreateWithId(Guid WarehouseId, string state, string city, int capacity)
+        => new()
+        {
+            Id = WarehouseId,
+            State = state,
+            City = city,
+            Capacity = capacity
         };
 }
