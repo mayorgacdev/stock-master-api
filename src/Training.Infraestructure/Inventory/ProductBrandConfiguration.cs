@@ -1,5 +1,4 @@
-﻿
-namespace Training.Infraestructure;
+﻿namespace Training.Infraestructure;
 
 public class ProductBrandConfiguration : IEntityTypeConfiguration<ProductBrand>
 {

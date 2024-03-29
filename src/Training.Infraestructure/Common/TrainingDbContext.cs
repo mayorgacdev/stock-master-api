@@ -3,7 +3,6 @@
 public class TrainingDbContext : DbContext
 {
     public TrainingDbContext(DbContextOptions<TrainingDbContext> options) : base(options) { }
-
     public DbSet<Customer> Customers => base.Set<Customer>();
     public DbSet<DeliveryPrice> DeliveryPrices => base.Set<DeliveryPrice>();
     public DbSet<Vehicle> Vehicles => base.Set<Vehicle>();
@@ -15,7 +14,6 @@ public class TrainingDbContext : DbContext
     public DbSet<ProductPrice> ProductPrices => base.Set<ProductPrice>();
     public DbSet<ProductPicture> ProductPictures => base.Set<ProductPicture>();
     public DbSet<Warehouse> Warehouses => base.Set<Warehouse>();
-
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {

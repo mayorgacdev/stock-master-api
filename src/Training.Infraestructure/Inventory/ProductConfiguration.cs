@@ -1,21 +1,19 @@
-﻿using Training.Domain;
-
-namespace Training.Infraestructure;
+﻿namespace Training.Infraestructure;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> Builder)
     {
         Builder.Property(Prop => Prop.Id).ValueGeneratedOnAdd();
-        Builder.Property(p => p.Description).HasMaxLength(255).IsRequired();
-        Builder.Property(p => p.Stock).IsRequired();
-        Builder.Property(p => p.ReorderLevel).IsRequired();
-        Builder.Property(p => p.Tax).IsRequired();
-        Builder.Property<decimal>("PurchasePriceAmount").HasColumnName("PurchasePrice").HasColumnType("decimal(18, 2)").IsRequired();
-        Builder.HasOne<Supplier>().WithMany().HasForeignKey(p => p.SupplierId);
-        Builder.HasOne<Warehouse>().WithMany().HasForeignKey(p => p.WarehouseId);
-        Builder.HasOne<ProductBrand>().WithMany().HasForeignKey(p => p.ProductBrandId);
-        Builder.HasOne<ProductType>().WithMany().HasForeignKey(p => p.ProductTypeId);
+        Builder.Property(Prop => Prop.Description).HasMaxLength(255).IsRequired();
+        Builder.HasOne(Prop => Prop.Warehouse).WithMany(Collection => Collection.Products).HasForeignKey(Prop => Prop.WarehouseId);
+
+        Builder.AfterInsert(Trigger => Trigger
+            .Action(Action => Action
+            .Condition(Products => Products.New.Stock > 0 && Products.New.Warehouse.Capacity  >= Products.New.Warehouse.Capacity + Products.New.Stock)
+                .Update<Warehouse>(
+                (Product, Warehouse) => Warehouse.Id == Product.New.WarehouseId,
+                (NewProduct, Warehouse) => Warehouse.CreateWithId(Warehouse.Id, Warehouse.State, Warehouse.City, Warehouse.Capacity + NewProduct.New.Stock)
+            )));
     }
 }
-
