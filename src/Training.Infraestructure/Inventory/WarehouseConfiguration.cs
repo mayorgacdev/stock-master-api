@@ -8,6 +8,7 @@ public class WarehouseConfiguration : IEntityTypeConfiguration<Warehouse>
         builder.Property(prop => prop.State).HasMaxLength(50).IsRequired();
         builder.Property(prop => prop.City).HasMaxLength(50).IsRequired();
         builder.Property(prop => prop.Capacity).IsRequired();
+        builder.Property(prop => prop.Max).IsRequired();
         builder.ToTable(nameof(Warehouse));
     }
 }

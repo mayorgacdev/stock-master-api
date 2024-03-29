@@ -5,7 +5,7 @@
 /// </summary>
 public class Warehouse : Entity
 {
-    private Warehouse() { }
+    public Warehouse() { }
 
     /// <summary>
     /// Gets or sets the state where the warehouse is located.
@@ -15,17 +15,22 @@ public class Warehouse : Entity
     /// <summary>
     /// Gets the city where the warehouse is located.
     /// </summary>
-    public string City { get; private set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets the capacity of the warehouse.
     /// </summary>
-    public int Capacity { get; private set; } = 0;
+    public int Capacity { get;  set; } = 0;
+
+    /// <summary>
+    /// Gets the maximum capacity of the warehouse.
+    /// </summary>
+    public int Max { get;  set; } = 0;
 
     /// <summary>
     /// Products stored in the warehouse.
     /// </summary>
-    public ICollection<Product> Products { get; private set; } = new List<Product>();
+    public ICollection<Product> Products { get;  set; } = new List<Product>();
 
     /// <summary>
     /// Creates a new instance of the Warehouse class.
@@ -33,19 +38,21 @@ public class Warehouse : Entity
     /// <param name="state"></param>
     /// <param name="city"></param>
     /// <returns></returns>
-    public static Warehouse Create(string state, string city, int capacity)
+    public static Warehouse Create(int max, string state, string city, int capacity)
         => new()
         {
             Id = Guid.NewGuid(),
+            Max = max,
             State = state,
             City = city,
             Capacity = capacity
         };
 
-    public static Warehouse CreateWithId(Guid WarehouseId, string state, string city, int capacity)
+    public static Warehouse CreateWithId(Guid WarehouseId, int max,string state, string city, int capacity)
         => new()
         {
             Id = WarehouseId,
+            Max = max,
             State = state,
             City = city,
             Capacity = capacity

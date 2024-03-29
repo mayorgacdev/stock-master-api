@@ -1,6 +1,4 @@
-﻿using Laraue.EfCoreTriggers.SqlServer.Extensions;
-
-namespace Training.WebApi;
+﻿namespace Training.WebApi;
 
 public static class ServicesExtensions
 {
@@ -8,9 +6,11 @@ public static class ServicesExtensions
     {
         Services.AddDbContext<TrainingDbContext>(Options => 
         {
-            Options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]).UseSqlServerTriggers();
-        });        
-    
+            Options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]);
+        });
+
+        Services.AddScoped<ICustomerService, CustomerService>();
+        
         return Services;
     }
 }
