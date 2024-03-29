@@ -1,4 +1,4 @@
-﻿namespace Training.Domain;
+﻿namespace Training.Domain.Sales;
 
 public class Vehicle : Entity
 {

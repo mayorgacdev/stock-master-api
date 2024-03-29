@@ -1,5 +1,4 @@
-﻿namespace Training.Domain;
-
+﻿namespace Training.Domain.Sales;
 public class ProductLine : InvoiceLine
 {
     private ProductLine() { }

@@ -1,11 +1,11 @@
-﻿namespace Training.Domain;
+﻿namespace Training.Domain.Sales;
 
 public class DeliveryPrice : Entity
 {
-    private decimal Amount { get; set; }
-    private Currency Currency { get; set; }         
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
+    private decimal Amount { get; set; }
+    private Currency Currency { get; set; }
     public Money Price
     {
         get => this.Currency.Amount(this.Amount);
