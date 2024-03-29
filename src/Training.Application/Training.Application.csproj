@@ -5,11 +5,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutomaticInterface" Version="2.3.0" />
-    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="AutomaticInterface" Version="2.3.0"/>
+    <PackageReference Include="System.Linq.Async" Version="6.0.1"/>
+    <PackageReference Include="ErrorOr" Version="2.0.1"/>
+    <PackageReference Include="AutoMapper.Extensions" Version="2.1.0"/>
+    <PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Training.Infraestructure\Training.Infraestructure.csproj" />
-    <ProjectReference Include="..\Training.Contracts\Training.Contracts.csproj" />
+    <ProjectReference Include="..\Training.Infraestructure\Training.Infraestructure.csproj"/>
+    <ProjectReference Include="..\Training.Contracts\Training.Contracts.csproj"/>
   </ItemGroup>
 </Project>

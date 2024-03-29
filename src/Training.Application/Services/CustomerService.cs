@@ -1,12 +1,11 @@
 ﻿namespace Training.Application;
 
 [GenerateAutomaticInterface]
-public class CustomerService(TrainingDbContext dbContext) : ICustomerService
+public class CustomerService(ISpecification<Customer> specification) : ICustomerService
 {
-    private readonly TrainingDbContext _dbContext = dbContext;
+    private readonly ISpecification<Customer> _specification = specification;
 
-    public IAsyncEnumerable<CustomerInfo> FetchCustomersAsync()
+    public void FetchCustomersAsync(BaseFilter filter)
     {
-        return _dbContext.Customers.Select(c => c.ToCustomerInfo()).ToAsyncEnumerable();
     }
 }
