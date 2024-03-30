@@ -13,3 +13,6 @@ global using AutoMapper;
 global using AutoMapper.QueryableExtensions;
 global using Training.Infraestructure.Interfaces;
 global using Training.Infraestructure.Data;
+global using Ardalis.Specification;
+global using Ardalis.Specification.EntityFrameworkCore;
+global using Training.Contracts.Sales.Responses;

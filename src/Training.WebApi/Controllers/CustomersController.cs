@@ -2,14 +2,18 @@
 
 [ApiController]
 [Route("api/[controller]")]
-public class CustomersController(ICustomerService customerService) :  ControllerBase
+public class CustomersController(ICustomerService CustomerService) :  ControllerBase
 {
-    private readonly ICustomerService _customerService = customerService;
-
     [HttpGet(Name = "GetCustomers")]
-    public async Task<PagedResponse<CustomerInfo>> FetchCustomersAsync()
+    public Task<PagedResponse<CustomerInfo>> FetchCustomersAsync([FromBody] CustomerFilter Filter)
     {
-        BaseFilter baseFilter = new();
-        return await _customerService.FetchCustomersAsync(baseFilter);
+       return CustomerService.FetchCustomers(Filter);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateCurstomerRequest request)
+    {
+        await CustomerService.CreateCustomer(request);
+        return Ok();
     }
 }

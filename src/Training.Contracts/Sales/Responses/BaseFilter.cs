@@ -1,4 +1,4 @@
-﻿namespace Training.Infraestructure;
+﻿namespace Training.Contracts.Sales.Responses;
 
 public record BaseFilter
 {

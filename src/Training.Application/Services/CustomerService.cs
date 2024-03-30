@@ -1,13 +1,17 @@
 ﻿namespace Training.Application;
 
 [GenerateAutomaticInterface]
-public class CustomerService(IUnitOfWork unitOfWork, ISpecification<Customer> specification) : ICustomerService
+public class CustomerService(IUnitOfWork UnitOfWork, ISingleResultSpecification<Customer> Specification) : ICustomerService
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly ISpecification<Customer> _specification = specification;
-
-    public Task<PagedResponse<CustomerInfo>> FetchCustomersAsync(BaseFilter baseFilter)
+    public async Task<PagedResponse<CustomerInfo>> FetchCustomers(CustomerFilter Filter)
     {
-        return _unitOfWork.CustomerRepository.ProjectToListAsync<CustomerInfo>(_specification.OrderBy(e => e.FirtsName), baseFilter, default);
+        Specification.Query.ApplySearching(Filter);
+        return await UnitOfWork.CustomerReadRepository.ProjectToListAsync<CustomerInfo>(Specification, Filter, default);
+    }
+
+    public async Task CreateCustomer(CreateCurstomerRequest Request)
+    {
+        await UnitOfWork.CustomerRepository.AddAsync(Request.ToCustomer());
+        await UnitOfWork.SaveChangesAsync();
     }
 }

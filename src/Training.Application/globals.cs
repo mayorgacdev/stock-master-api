@@ -4,3 +4,7 @@ global using System.Text.Json.Serialization;
 global using Training.Domain.Sales;
 global using Training.Infraestructure.Interfaces;
 global using AutoMapper;
+global using Training.Application.Mapping;
+global using Ardalis.Specification;
+global using Training.Infraestructure.Data.Specifications;
+global using Training.Contracts.Sales.Responses;

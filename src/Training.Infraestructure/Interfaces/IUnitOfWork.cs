@@ -2,7 +2,8 @@ namespace Training.Infraestructure.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
-    public IRepository<Product> ProductRepository { get; }
-    public IRepository<Customer> CustomerRepository { get; }
-    Task<int> Commit();
+    IRepository<Customer> CustomerRepository { get; }
+    IReadRepository<Customer> CustomerReadRepository { get; }
+    IReadRepository<Product> ProductReadRepository { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
