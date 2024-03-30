@@ -1,4 +1,4 @@
-﻿namespace Training.Infraestructure;
+﻿namespace Training.Infraestructure.Data;
 
 public class DbSetRepository<TEntity> : IRepository<TEntity>
     where TEntity : class
@@ -16,17 +16,17 @@ public class DbSetRepository<TEntity> : IRepository<TEntity>
     public async Task<PagedResponse<TResult>> ProjectToListAsync<TResult>(
         ISpecification<TEntity> specification,
         BaseFilter filter,
-        CancellationToken cancellationToken)
+        CancellationToken? cancellationToken = default)
     {
         var count = await Apply(specification).CountAsync();
 
         var pagination = new Pagination(count, filter);
 
-        var result = Apply(specification)
+        var result = await Apply(specification)
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .ProjectTo<TResult>(_configurationProvider)
-            .ToAsyncEnumerable();
+            .ToListAsync();
 
         return new PagedResponse<TResult>(result, pagination);
     }

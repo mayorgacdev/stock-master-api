@@ -7,8 +7,9 @@ public class CustomersController(ICustomerService customerService) :  Controller
     private readonly ICustomerService _customerService = customerService;
 
     [HttpGet(Name = "GetCustomers")]
-    public IAsyncEnumerable<CustomerInfo> FetchCustomersAsync()
+    public async Task<PagedResponse<CustomerInfo>> FetchCustomersAsync()
     {
-        return _customerService.FetchCustomersAsync();
+        BaseFilter baseFilter = new();
+        return await _customerService.FetchCustomersAsync(baseFilter);
     }
 }

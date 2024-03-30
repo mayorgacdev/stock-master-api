@@ -11,3 +11,5 @@ global using System.Collections.Immutable;
 global using System.Text.Json.Serialization;
 global using AutoMapper;
 global using AutoMapper.QueryableExtensions;
+global using Training.Infraestructure.Interfaces;
+global using Training.Infraestructure.Data;

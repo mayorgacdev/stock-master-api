@@ -3,9 +3,9 @@
 public class PagedResponse<T>
 {
     public Pagination Pagination { get; }
-    public IAsyncEnumerable<T> Data { get; }
+    public List<T> Data { get; }
 
-    public PagedResponse(IAsyncEnumerable<T> data, Pagination pagination)
+    public PagedResponse(List<T> data, Pagination pagination)
     {
         Data = data;
         Pagination = pagination;

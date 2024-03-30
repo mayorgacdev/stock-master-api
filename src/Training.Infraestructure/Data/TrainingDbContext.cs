@@ -1,8 +1,9 @@
-﻿namespace Training.Infraestructure;
+﻿namespace Training.Infraestructure.Data;
 
-public class TrainingDbContext : DbContext
+public class TrainingDbContext(DbContextOptions<TrainingDbContext> options, IMapper mapper) : DbContext(options), IUnitOfWork
 {
-    public TrainingDbContext(DbContextOptions<TrainingDbContext> options) : base(options) { }
+    private readonly IMapper _mapper = mapper;
+
     public DbSet<Customer> Customers => base.Set<Customer>();
     public DbSet<DeliveryPrice> DeliveryPrices => base.Set<DeliveryPrice>();
     public DbSet<Vehicle> Vehicles => base.Set<Vehicle>();
@@ -14,6 +15,11 @@ public class TrainingDbContext : DbContext
     public DbSet<ProductPrice> ProductPrices => base.Set<ProductPrice>();
     public DbSet<ProductPicture> ProductPictures => base.Set<ProductPicture>();
     public DbSet<Warehouse> Warehouses => base.Set<Warehouse>();
+
+    public IRepository<Product> ProductRepository => new DbSetRepository<Product>(Products, Products, _mapper.ConfigurationProvider);
+    public IRepository<Customer> CustomerRepository => new DbSetRepository<Customer>(Customers, Customers, _mapper.ConfigurationProvider);
+
+    public Task<int> Commit() => base.SaveChangesAsync();
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {
