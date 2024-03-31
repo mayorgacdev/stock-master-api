@@ -1,6 +1,4 @@
-﻿using Training.Contracts.Sales.Responses;
-
-namespace Training.Application.Mapping;
+﻿namespace Training.Application.Mapping;
 
 public class MappingProfile : Profile
 {

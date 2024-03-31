@@ -10,4 +10,6 @@ global using Training.Infraestructure.Data;
 global using System.Reflection;
 global using Training.Application.Mapping;
 global using Ardalis.Specification;
-global using Training.Contracts.Sales.Responses;
+global using Training.Contracts.Sales.Common;
+
+global using Training.Contracts.Sales.Requests.Customers;

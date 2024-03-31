@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Training.Infraestructure\Training.Infraestructure.csproj" />
     <ProjectReference Include="..\Training.Contracts\Training.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ErrorCodeMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorCodeMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

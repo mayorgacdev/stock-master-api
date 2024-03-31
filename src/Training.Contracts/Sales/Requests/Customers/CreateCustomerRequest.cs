@@ -1,4 +1,4 @@
-﻿namespace Training.Contracts.Sales.Responses;
+﻿namespace Training.Contracts.Sales.Requests.Customers;
 
 public class CreateCurstomerRequest
 {

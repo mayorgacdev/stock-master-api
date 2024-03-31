@@ -5,9 +5,9 @@
 public class CustomersController(ICustomerService CustomerService) :  ControllerBase
 {
     [HttpGet(Name = "GetCustomers")]
-    public Task<PagedResponse<CustomerInfo>> FetchCustomersAsync([FromBody] CustomerFilter Filter)
+    public Task<PagedResponse<CustomerInfo>> FetchCustomersAsync([FromQuery] CustomerFilter Filter)
     {
-       return CustomerService.FetchCustomers(Filter);
+       return CustomerService.SearchCustomers(Filter);
     }
 
     [HttpPost]
