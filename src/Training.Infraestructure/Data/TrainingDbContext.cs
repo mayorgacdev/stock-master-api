@@ -1,4 +1,6 @@
-﻿namespace Training.Infraestructure.Data;
+﻿using Training.Infraestructure.Interfaces;
+
+namespace Training.Infraestructure.Data;
 
 public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMapper Mapper) : DbContext(Options), IUnitOfWork
 {

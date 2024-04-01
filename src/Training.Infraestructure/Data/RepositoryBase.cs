@@ -1,4 +1,7 @@
-﻿namespace Training.Infraestructure;
+﻿using Training.Common;
+using Training.Infraestructure.Interfaces;
+
+namespace Training.Infraestructure;
 
 public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>
     where TEntity : class
@@ -21,8 +24,12 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>
         ConfigurationProvider = Mapper.ConfigurationProvider;
     }
 
-    public async Task AddAsync(TEntity Entity, CancellationToken CancellationToken = default)
-        => await DbContext.Set<TEntity>().AddAsync(Entity, CancellationToken);
+    public async Task<TEntity> AddAsync(TEntity Entity, CancellationToken CancellationToken = default)
+    {
+        await DbContext.Set<TEntity>().AddAsync(Entity, CancellationToken);
+        await DbContext.SaveChangesAsync();
+        return Entity;
+    }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> Entities, CancellationToken CancellationToken = default)
         => await DbContext.Set<TEntity>().AddRangeAsync(Entities, CancellationToken);

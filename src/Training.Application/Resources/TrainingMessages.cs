@@ -1,4 +1,7 @@
-﻿namespace Training.Application.Resources;
+﻿using System.Globalization;
+using System.Resources;
+
+namespace Training.Application.Resources;
 
 /// <summary>
 ///   A strongly-typed resource class, for looking up localized strings, etc.

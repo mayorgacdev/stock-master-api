@@ -1,4 +1,6 @@
-﻿namespace Training.Infraestructure.Data.Specifications;
+﻿using Training.Common;
+
+namespace Training.Infraestructure.Data.Specifications;
 
 // Examples how to extend specifications.
 // These extensions are applied in Ardalis.Sample.Domain.Specs.CustomerSpec

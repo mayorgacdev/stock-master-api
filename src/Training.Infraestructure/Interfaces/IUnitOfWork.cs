@@ -1,3 +1,6 @@
+using Training.Domain.Inventory;
+using Training.Domain.Sales;
+
 namespace Training.Infraestructure.Interfaces;
 
 public interface IUnitOfWork : IDisposable

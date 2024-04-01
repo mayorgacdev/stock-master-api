@@ -1,4 +1,4 @@
-﻿namespace Training.Contracts.Sales.Requests.Customers;
+﻿namespace Training.Common;
 
 public record CustomerFilter : BaseFilter
 {

@@ -1,4 +1,7 @@
-﻿namespace Training.Application.Resources;
+﻿using System.Globalization;
+using System.Resources;
+
+namespace Training.Application.Resources;
 
 
 /// <summary>

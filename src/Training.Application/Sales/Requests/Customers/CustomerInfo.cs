@@ -1,4 +1,4 @@
-﻿namespace Training.Contracts.Sales.Requests.Customers;
+﻿namespace Training.Application.Sales.Requests.Customers;
 
 // Convert to class
 public class CustomerInfo

@@ -2,7 +2,7 @@
 
 public class Customer : Entity
 {
-    private Customer() { }
+    public Customer() { }
     public string FirtsName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

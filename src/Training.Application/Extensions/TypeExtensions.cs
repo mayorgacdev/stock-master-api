@@ -1,4 +1,6 @@
-﻿namespace Training.Application.Extensions;
+﻿using Training.Application.Attributes;
+
+namespace Training.Application.Extensions;
 
 /// <summary>
 ///     Métodos de utilería para obtener información desde un Type.
@@ -6,14 +8,12 @@
 public static class TypeExtensions
 {
     /// <summary>
-    ///     Obtiene el Tipo que encapsula un Tipo.
+    /// 
+    /// REMOVE THIS
     /// </summary>
-    /// <param name="Type">
-    ///     Tipo que tiene encapsulado otro Tipo.
-    /// </param>
-    /// <returns>
-    ///     Regresa la representación original del Tipo encapsulado desde <paramref name="Type" />.
-    /// </returns>
+    /// <param name="Type"></param>
+    /// <returns></returns>
+
     public static Type GetUnderlyingType(this Type Type)
     {
         static Type NullableGetUnderlyingType(Type Type) => Nullable.GetUnderlyingType(Type) ?? Type;

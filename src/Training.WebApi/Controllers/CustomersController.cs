@@ -1,4 +1,8 @@
-﻿namespace Training.WebApi;
+﻿using Training.Application.Requests;
+using Training.Application.Sales.Requests.Customers;
+using Training.Common;
+
+namespace Training.WebApi;
 
 [ApiController]
 [Route("api/[controller]")]

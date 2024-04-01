@@ -1,4 +1,4 @@
-﻿namespace Training.Contracts.Sales.Common;
+﻿namespace Training.Common;
 
 public class PaginationSettings
 {

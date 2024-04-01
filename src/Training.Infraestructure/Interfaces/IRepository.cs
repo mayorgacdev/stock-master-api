@@ -1,8 +1,10 @@
-﻿namespace Training.Infraestructure;
+﻿using Training.Common;
+
+namespace Training.Infraestructure.Interfaces;
 
 public interface IRepository<TEntity>
 {
-    Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
     void Update(TEntity entity);
     Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);

@@ -1,4 +1,6 @@
-﻿namespace Training.Contracts.Sales.Common;
+﻿using System.Text.Json.Serialization;
+
+namespace Training.Common;
 
 public class Pagination
 {

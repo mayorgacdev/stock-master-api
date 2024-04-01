@@ -1,4 +1,6 @@
-﻿namespace Training.Infraestructure;
+﻿using Training.Common;
+
+namespace Training.Infraestructure;
 
 public static class DbContextExtensions
 {
