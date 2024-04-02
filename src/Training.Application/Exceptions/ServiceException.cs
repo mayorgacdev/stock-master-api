@@ -1,6 +1,4 @@
-﻿using Training.Application.Responses;
-
-namespace Training.Application.Exceptions;
+﻿namespace Training.Application.Exceptions;
 
 /// <summary>
 ///     Representa los errores ocurridos en un Servicio.

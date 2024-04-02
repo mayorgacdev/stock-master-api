@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Training.Application.Responses;
+namespace Training.Common;
 
 using static System.Text.Json.Serialization.JsonIgnoreCondition;
 

@@ -3,10 +3,10 @@
 public class Customer : Entity
 {
     public Customer() { }
-    public string FirtsName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Phone { get; set; } = string.Empty;
+    public string FirtsName { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public string Phone { get; private set; } = string.Empty;
 
     public static Customer Create(string firstName, string lastName, string email, string phone)
         => new Customer

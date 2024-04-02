@@ -1,28 +1,18 @@
-using Microsoft.OpenApi.Models;
+using Training.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
-builder.Services.AddServices(builder.Configuration);
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Nombre de tu API", Version = "v1" });
-});
+builder.Services.AddTrainingSwaggerGen();
+builder.Services.AddServicesFromAttribute();
+builder.Services.AddInfraestructure(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nombre de tu API v1");
-});
-
+app.UseTrainingSwaggerUI();
+app.UseTrainingMiddlewares();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

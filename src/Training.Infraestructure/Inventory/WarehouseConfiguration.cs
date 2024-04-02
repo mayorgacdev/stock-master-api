@@ -2,13 +2,13 @@
 
 public class WarehouseConfiguration : IEntityTypeConfiguration<Warehouse>
 {
-    public void Configure(EntityTypeBuilder<Warehouse> builder)
+    public void Configure(EntityTypeBuilder<Warehouse> Builder)
     {
-        builder.Property(prop => prop.Id).ValueGeneratedOnAdd();
-        builder.Property(prop => prop.State).HasMaxLength(50).IsRequired();
-        builder.Property(prop => prop.City).HasMaxLength(50).IsRequired();
-        builder.Property(prop => prop.Capacity).IsRequired();
-        builder.Property(prop => prop.Max).IsRequired();
-        builder.ToTable(nameof(Warehouse));
+        Builder.Property(prop => prop.Id).ValueGeneratedOnAdd();
+        Builder.Property(prop => prop.State).HasMaxLength(50).IsRequired();
+        Builder.Property(prop => prop.City).HasMaxLength(50).IsRequired();
+        Builder.Property(prop => prop.Capacity).IsRequired();
+        Builder.Property(prop => prop.Max).IsRequired();
+        Builder.ToTable(nameof(Warehouse));
     }
 }

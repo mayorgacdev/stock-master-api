@@ -1,18 +1,18 @@
 ﻿using Ardalis.Specification;
 using Training.Application.Attributes;
 using Training.Application.Sales.Requests.Customers;
-using Training.Common;
 using Training.Domain.Common;
 using Training.Domain.Sales;
 using Training.Infraestructure.Interfaces;
 using static Training.Application.Constants.ErrorCodePrefix;
 using Training.Infraestructure.Data.Specifications;
 using Training.Application.Requests;
+using static Training.Common.ContextData;
 
 namespace Training.Application;
 
 [GenerateAutomaticInterface]
-[ServiceAttribute<ICustomerService>]
+[Service<ICustomerService>]
 [ErrorCategory(nameof(CustomerService))]
 [ErrorCodePrefix(CustomerServicePrefix)]
 public class CustomerService(IUnitOfWork UnitOfWork, ISingleResultSpecification<Customer> Specification) : ICustomerService
@@ -27,9 +27,10 @@ public class CustomerService(IUnitOfWork UnitOfWork, ISingleResultSpecification<
     [MethodId("02CAD161-104E-4750-B17E-C0AC8A1C404C")]
     public async Task<EntityId> CreateCustomer(CreateCurstomerRequest Request)
     {
-        await Request.ValidateAndThrowOnFailuresAsync();
-        var result = await UnitOfWork.CustomerRepository.AddAsync(Customer.Create(Request.FirstName, Request.LastName, Request.Email, Request.Phone), default);
-        return result.Id;
+        await Request.ValidateAndThrowOnFailuresAsync(Key(nameof(IUnitOfWork)).Value(UnitOfWork)
+            .Key(nameof(ISingleResultSpecification<Customer>)).Value(Specification));
+
+        return (await UnitOfWork.CustomerRepository.AddAsync(Customer.Create(Request.FirstName, Request.LastName, Request.Email, Request.Phone))).Id;
     }
 }
 // Console.WriteLine(Guid.NewGuid().ToString().ToUpper());

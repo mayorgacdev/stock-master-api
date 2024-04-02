@@ -2,10 +2,10 @@
 
 public class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
 {
-    public void Configure(EntityTypeBuilder<ProductType> builder)
+    public void Configure(EntityTypeBuilder<ProductType> Builder)
     {
-        builder.Property(Prop => Prop.Id).ValueGeneratedOnAdd();
-        builder.Property(Prop => Prop.Name).HasMaxLength(50).IsRequired();
-        builder.ToTable(nameof(ProductType));
+        Builder.Property(Prop => Prop.Id).ValueGeneratedOnAdd();
+        Builder.Property(Prop => Prop.Name).HasMaxLength(50).IsRequired();
+        Builder.ToTable(nameof(ProductType));
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Training.Application.Exceptions;
-using Training.Application.Responses;
 
 namespace Training.Application.Extensions;
 

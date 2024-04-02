@@ -34,7 +34,10 @@ public static class CustomerSpecExtensions
     }
 
     public static ISpecificationBuilder<Customer> ByName(this ISpecificationBuilder<Customer> Builder, string? Name)
-        => Name is not null ? Builder.Where(Prop => Prop.FirtsName.Contains(Name) || Prop.LastName.Contains(Name)) : Builder;    
+        => Name is not null ? Builder.Where(Prop => Prop.FirtsName.Contains(Name) || Prop.LastName.Contains(Name)) : Builder;
+
+    public static ISpecificationBuilder<Customer> ByEmail(this ISpecificationBuilder<Customer> Builder, string? Email)
+        => Email is not null ? Builder.Where(Prop => Prop.Email.Equals(Email)) : Builder;
 
     public static ISpecificationBuilder<Customer> ApplySearching(this ISpecificationBuilder<Customer> Builder, CustomerFilter Filter)
         => Filter is not null ? Builder.ByName(Filter.Name).ApplyOrdering() : Builder;

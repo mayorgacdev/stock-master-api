@@ -1,6 +1,4 @@
-﻿using Training.Application.Responses;
-
-namespace Training.Application.Exceptions;
+﻿namespace Training.Application.Exceptions;
 
 public class TrainingException(string? Message = null, ErrorStatus? ErrorStatus = null, Exception? InnerException = null) : Exception(Message, InnerException)
 {
