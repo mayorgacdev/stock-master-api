@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Training.Infraestructure.Common.Migrations
+namespace Training.Infraestructure.src.Training.Infraestructure.Data
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class TTT : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,24 @@ namespace Training.Infraestructure.Common.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InvoiceLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityReturned = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +187,12 @@ namespace Training.Infraestructure.Common.Migrations
                 {
                     table.PrimaryKey("PK_InvoiceLines", x => new { x.ProductId, x.InvoiceRecordId });
                     table.ForeignKey(
+                        name: "FK_InvoiceLines_Deliveries_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Deliveries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_InvoiceLines_InvoiceRecord_InvoiceRecordId",
                         column: x => x.InvoiceRecordId,
                         principalTable: "InvoiceRecord",
@@ -181,7 +205,7 @@ namespace Training.Infraestructure.Common.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductBrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -192,6 +216,8 @@ namespace Training.Infraestructure.Common.Migrations
                     Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductBrandId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProductTypeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -206,9 +232,25 @@ namespace Training.Infraestructure.Common.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Products_ProductBrand_ProductBrandId1",
+                        column: x => x.ProductBrandId1,
+                        principalTable: "ProductBrand",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Products_ProductType_ProductTypeId",
                         column: x => x.ProductTypeId,
                         principalTable: "ProductType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ProductType_ProductTypeId1",
+                        column: x => x.ProductTypeId1,
+                        principalTable: "ProductType",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Products_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Supplier",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -226,6 +268,7 @@ namespace Training.Infraestructure.Common.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -239,6 +282,11 @@ namespace Training.Infraestructure.Common.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductPicture_Products_ProductId1",
+                        column: x => x.ProductId1,
+                        principalTable: "Products",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -276,9 +324,20 @@ namespace Training.Infraestructure.Common.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductPicture_ProductId1",
+                table: "ProductPicture",
+                column: "ProductId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductPrice_ProductId",
                 table: "ProductPrice",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Name",
+                table: "Products",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductBrandId",
@@ -286,9 +345,24 @@ namespace Training.Infraestructure.Common.Migrations
                 column: "ProductBrandId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductBrandId1",
+                table: "Products",
+                column: "ProductBrandId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductTypeId1",
+                table: "Products",
+                column: "ProductTypeId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_SupplierId",
+                table: "Products",
+                column: "SupplierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_WarehouseId",
@@ -315,10 +389,10 @@ namespace Training.Infraestructure.Common.Migrations
                 name: "ProductPrice");
 
             migrationBuilder.DropTable(
-                name: "Supplier");
+                name: "Vehicle");
 
             migrationBuilder.DropTable(
-                name: "Vehicle");
+                name: "Deliveries");
 
             migrationBuilder.DropTable(
                 name: "InvoiceRecord");
@@ -331,6 +405,9 @@ namespace Training.Infraestructure.Common.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductType");
+
+            migrationBuilder.DropTable(
+                name: "Supplier");
 
             migrationBuilder.DropTable(
                 name: "Warehouse");

@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Training.Infraestructure;
+using Training.Infraestructure.Data;
 
 #nullable disable
 
-namespace Training.Infraestructure.Common.Migrations
+namespace Training.Infraestructure.src.Training.Infraestructure.Data
 {
     [DbContext(typeof(TrainingDbContext))]
-    [Migration("20240329150948_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240409182424_TTT")]
+    partial class TTT
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,12 +49,18 @@ namespace Training.Infraestructure.Common.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("ProductBrandId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProductBrandId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductTypeId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PurchasePriceAmount")
@@ -81,9 +87,18 @@ namespace Training.Infraestructure.Common.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("ProductBrandId");
 
+                    b.HasIndex("ProductBrandId1");
+
                     b.HasIndex("ProductTypeId");
+
+                    b.HasIndex("ProductTypeId1");
+
+                    b.HasIndex("SupplierId");
 
                     b.HasIndex("WarehouseId");
 
@@ -135,12 +150,17 @@ namespace Training.Infraestructure.Common.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ProductId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductPicture", (string)null);
                 });
@@ -180,6 +200,40 @@ namespace Training.Infraestructure.Common.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductPrice", (string)null);
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.ProductReturn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("InvoiceLineId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("QuantityReturned")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductType", b =>
@@ -497,14 +551,28 @@ namespace Training.Infraestructure.Common.Migrations
             modelBuilder.Entity("Training.Domain.Inventory.Product", b =>
                 {
                     b.HasOne("Training.Domain.Inventory.ProductBrand", null)
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("ProductBrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Training.Domain.Inventory.ProductBrand", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProductBrandId1");
+
+                    b.HasOne("Training.Domain.Inventory.ProductType", null)
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Training.Domain.Inventory.ProductType", null)
                         .WithMany("Products")
-                        .HasForeignKey("ProductTypeId")
+                        .HasForeignKey("ProductTypeId1");
+
+                    b.HasOne("Training.Domain.Inventory.Supplier", null)
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -520,10 +588,14 @@ namespace Training.Infraestructure.Common.Migrations
             modelBuilder.Entity("Training.Domain.Inventory.ProductPicture", b =>
                 {
                     b.HasOne("Training.Domain.Inventory.Product", null)
-                        .WithMany("ProductPictures")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Training.Domain.Inventory.Product", null)
+                        .WithMany("ProductPictures")
+                        .HasForeignKey("ProductId1");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductPrice", b =>
@@ -540,6 +612,12 @@ namespace Training.Infraestructure.Common.Migrations
                     b.HasOne("Training.Domain.Sales.InvoiceRecord", null)
                         .WithMany("Lines")
                         .HasForeignKey("InvoiceRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Training.Domain.Inventory.ProductReturn", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -11,4 +11,3 @@ public class PagedResponse<T>
         Pagination = pagination;
     }
 }
-

@@ -1,13 +1,17 @@
+using Training.Application.Proxies;
 using Training.WebApi.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
+var Builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddTrainingSwaggerGen();
-builder.Services.AddServicesFromAttribute();
-builder.Services.AddInfraestructure(builder.Configuration);
-
-var app = builder.Build();
+Builder.Services.AddControllers().AddJsonOptions(static Options => Options.JsonSerializerOptions.PropertyNamingPolicy = JsonDefaultNamingPolicy.DefaultNamingPolicy); ;
+Builder.Services.AddTrainingSwaggerGen();
+Builder.Services.AddServicesFromAttribute();
+Builder.Services.AddInfraestructure(Builder.Configuration);
+Builder.Services.AddOutputCache(Options =>
+{
+    Options.AddBasePolicy(Builder => Builder.Expire(TimeSpan.FromSeconds(30)));
+});
+var app = Builder.Build();
 
 app.UseTrainingSwaggerUI();
 app.UseTrainingMiddlewares();

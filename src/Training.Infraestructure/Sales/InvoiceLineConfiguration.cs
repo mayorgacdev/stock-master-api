@@ -10,7 +10,7 @@ public class InvoiceLineConfiguration : IEntityTypeConfiguration<InvoiceLine>
         Builder.Property<decimal>("Amount").HasColumnName("Amount").HasColumnType("decimal(18, 2)").IsRequired(); 
 
         Builder.Property<Currency>("Currency").HasColumnName("Currency").HasConversion(currency => currency.Symbol, symbol => new Currency(symbol)).IsRequired();
-
+        Builder.HasOne<ProductReturn>().WithMany().HasForeignKey(Prop => Prop.ProductId);
         Builder.Ignore(Prop => Prop.Price);
     }
 }

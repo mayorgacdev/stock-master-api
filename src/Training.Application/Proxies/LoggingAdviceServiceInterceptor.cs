@@ -25,6 +25,7 @@ public class LoggingAdviceServiceInterceptor(ILogger ServiceLogger) : IIntercept
     public void Intercept(IInvocation Invocation)
     {
         BeforeProceed(Invocation);
+
         Invocation.Proceed();
 
         if (Invocation.MethodInvocationTarget.IsAsyncMethod())

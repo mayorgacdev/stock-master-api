@@ -9,11 +9,14 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         Builder.Property(Prop => Prop.Description)
             .HasMaxLength(255)
             .IsRequired();
-        
+
         Builder.HasOne(Prop => Prop.Warehouse)
             .WithMany(Collection => Collection.Products)
             .HasForeignKey(Prop => Prop.WarehouseId);
-        
+
+        Builder.HasQueryFilter(Prop => Prop.DeletedAt != null);
+        Builder.HasIndex(Prop => Prop.Name).IsUnique();
+
         Builder.Property(Prop => Prop.Tax)
             .HasColumnType("decimal(18, 2)");
 
@@ -21,38 +24,17 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasColumnName("PurchasePrice")
             .IsRequired()
             .HasColumnType("decimal(18, 2)");
-        
+
         Builder.Property<Currency>("Currency")
             .HasColumnName("Currency")
             .HasConversion(currency => currency.Symbol, symbol => new Currency(symbol))
             .IsRequired();
 
-        
-       /* Builder.AfterInsert(Trigger => Trigger
-            .Action(Action => Action
-                .Condition(Product => IsValidStock(Product))
-                .Condition(Product => IsValidExistenceOnWarehouse(Product))
-                .Update<Warehouse>(
-                    (Product, Warehouse) => Warehouse.Id == Product.New.WarehouseId,
-                    (NewProduct, OldWarehouse) => Warehouse.CreateWithId(
-                        OldWarehouse.Id,
-                        OldWarehouse.Max,
-                        OldWarehouse.State,
-                        OldWarehouse.City,
-                        OldWarehouse.Capacity + NewProduct.New.Stock)
-                )));*/
+        Builder.HasOne<ProductBrand>().WithMany().HasForeignKey(Prop => Prop.ProductBrandId);
+        Builder.HasMany<ProductPicture>().WithOne().HasForeignKey(Prop => Prop.ProductId);
+        Builder.HasOne<ProductType>().WithMany().HasForeignKey(Prop => Prop.ProductTypeId);
+        Builder.HasOne<Supplier>().WithMany().HasForeignKey(Prop => Prop.SupplierId);
 
         Builder.Ignore(Prop => Prop.PurchasePrice);
-    }
-
-    
-    private static bool IsValidStock(NewTableRef<Product> Product)
-    {
-        return Product.New.Stock > 0;
-    }
-
-    private static bool IsValidExistenceOnWarehouse(NewTableRef<Product> Product)
-    {
-        return Product.New.Warehouse.Max >= Product.New.Warehouse.Capacity + Product.New.Stock;
     }
 }

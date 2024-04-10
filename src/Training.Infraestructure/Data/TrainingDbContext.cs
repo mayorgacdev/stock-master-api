@@ -15,6 +15,8 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public DbSet<ProductPrice> ProductPrices => base.Set<ProductPrice>();
     public DbSet<ProductPicture> ProductPictures => base.Set<ProductPicture>();
     public DbSet<Warehouse> Warehouses => base.Set<Warehouse>();
+    public DbSet<Supplier> Suppliers => base.Set<Supplier>();
+    public DbSet<ProductReturn> Deliveries => base.Set<ProductReturn>();
 
     public IReadRepository<Customer> CustomerReadRepository => new ReadRepository<Customer>(this, Mapper);
     public IReadRepository<Product> ProductReadRepository => new ReadRepository<Product>(this, Mapper);

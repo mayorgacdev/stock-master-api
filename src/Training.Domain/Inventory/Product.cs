@@ -65,8 +65,6 @@ public class Product : Entity
         private set => (this.PurchasePriceAmount, this.Currency) = (value.Amount, value.Currency);
     }
 
-
-
     private decimal PurchasePriceAmount { get; set; } // Used by EF Core
 
     private Currency Currency { get; set; } // Used by EF Core
