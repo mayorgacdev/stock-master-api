@@ -17,4 +17,6 @@ public class Supplier : Entity
             Address = address,
             Phone = phone
         };
+
+    public ICollection<Product> Products { get; private set; } = new List<Product>();
 }

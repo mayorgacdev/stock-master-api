@@ -4,16 +4,23 @@ public class InvoiceRecord : Entity
 {
     private InvoiceRecord() { }
     public Guid CustomerId { get; internal set; }
+    public Customer Customer { get; internal set; } = default!;
+
     public Guid DeliveryPriceId { get; private set; }
+    public DeliveryPrice DeliveryPrice { get; private set; } = default!;
+
     public Guid VehicleId { get; private set; }
+    public Vehicle Vehicle { get; private set; } = default!;
+
     public string Status { get; set; } = string.Empty;
     public DateTime IssueTime { get; internal set; }
     public DateOnly DueDate { get; internal set; }
     public DateTime? PaymentTime { get; internal set; }
-    public List<InvoiceLine> Lines { get; } = new List<InvoiceLine>();
+
+    public ICollection<InvoiceLine> Invoices { get; } = new HashSet<InvoiceLine>();
 
     public Money TotalAmount =>
-        this.Lines.Aggregate(Money.Zero, (total, line) => total + line.Price);
+        this.Invoices.Aggregate(Money.Zero, (total, line) => total + line.Price);
 
     public static InvoiceRecord CreateNew(
         Guid customerId,

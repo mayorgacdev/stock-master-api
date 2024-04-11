@@ -17,4 +17,6 @@ public class Customer : Entity
             Email = email,
             Phone = phone
         };
+
+    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; } = new List<InvoiceRecord>();
 }

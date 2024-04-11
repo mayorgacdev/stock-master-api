@@ -1,4 +1,6 @@
-﻿namespace Training.Domain.Sales;
+﻿using Training.Domain.Inventory;
+
+namespace Training.Domain.Sales;
 public class ProductLine : InvoiceLine
 {
     private ProductLine() { }
@@ -13,4 +15,5 @@ public class ProductLine : InvoiceLine
         int quantity,
         Money price) 
         => new(invoiceRecordId, productId, description, quantity, price);
+
 }

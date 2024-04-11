@@ -8,7 +8,7 @@ public class Vehicle : Entity
     public string Description { get; set; } = string.Empty;
     public int Year { get; set; } = 0;
     public string Color { get; set; } = string.Empty;
-
+    public ICollection<InvoiceRecord> Invoices { get; set; } = [];
     public static Vehicle CreateNew(
         int supportedStock,
         string model,

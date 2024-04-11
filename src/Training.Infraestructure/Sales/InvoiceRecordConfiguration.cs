@@ -9,6 +9,10 @@ public class InvoiceRecordConfiguration : IEntityTypeConfiguration<InvoiceRecord
         Builder.Property(Prop => Prop.IssueTime).IsRequired();
         Builder.Property(Prop => Prop.DueDate).IsRequired();
         Builder.Property(Prop => Prop.PaymentTime).IsRequired();
+
+        Builder.HasMany(Prop => Prop.Invoices).WithOne(Prop => Prop.InvoiceRecord)
+            .HasForeignKey(Prop => Prop.InvoiceRecordId).HasConstraintName("IX_InvoiceRecord_Invoices_InvoiceRecord_Id");
+
         Builder.ToTable(nameof(InvoiceRecord));
     }
 }

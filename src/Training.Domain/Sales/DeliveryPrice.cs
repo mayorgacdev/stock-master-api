@@ -20,4 +20,6 @@ public class DeliveryPrice : Entity
             Price = price,
             Description = description
         };
+
+    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; } = new List<InvoiceRecord>();
 }

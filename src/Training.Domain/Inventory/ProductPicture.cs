@@ -20,6 +20,8 @@ public class ProductPicture : Entity
     /// </summary>
     public Guid ProductId { get; set; } = Guid.Empty;
 
+    public Product Product { get; set; } = default!;
+
     /// <summary>
     /// Creates a new instance of the productPicture class.
     /// </summary>

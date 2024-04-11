@@ -6,16 +6,30 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         Builder.Property(Prop => Prop.Id).ValueGeneratedOnAdd();
 
+        Builder.Property(Prop => Prop.Name).HasMaxLength(100).IsRequired();
+        Builder.HasIndex(Prop => Prop.Name).IsUnique();
+
         Builder.Property(Prop => Prop.Description)
             .HasMaxLength(255)
             .IsRequired();
 
-        Builder.HasOne(Prop => Prop.Warehouse)
-            .WithMany(Collection => Collection.Products)
-            .HasForeignKey(Prop => Prop.WarehouseId);
-
         Builder.HasQueryFilter(Prop => Prop.DeletedAt != null);
-        Builder.HasIndex(Prop => Prop.Name).IsUnique();
+
+        Builder.HasMany(Prop => Prop.ProductPictures)
+            .WithOne(Prop => Prop.Product).HasForeignKey(Prop => Prop.ProductId)
+            .HasConstraintName("IX_ProductPictures_Product_ProductId");
+
+        Builder.HasMany(Prop => Prop.AccesoryDetails).WithOne(Prop => Prop.Product)
+            .HasForeignKey(Prop => Prop.ProductId)
+            .HasConstraintName("IX_AccesoryDetails_Product_ProductId");
+
+        Builder.HasMany(Prop => Prop.ProductPrices).WithOne(Prop => Prop.Product)
+            .HasForeignKey(Prop => Prop.ProductId)
+            .HasConstraintName("IX_ProductPrices_Product_ProductId");
+
+        Builder.Property(Prop => Prop.Stock).IsRequired();
+
+        Builder.Property(Prop => Prop.ReorderLevel).IsRequired();
 
         Builder.Property(Prop => Prop.Tax)
             .HasColumnType("decimal(18, 2)");
@@ -29,11 +43,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasColumnName("Currency")
             .HasConversion(currency => currency.Symbol, symbol => new Currency(symbol))
             .IsRequired();
-
-        Builder.HasOne<ProductBrand>().WithMany().HasForeignKey(Prop => Prop.ProductBrandId);
-        Builder.HasMany<ProductPicture>().WithOne().HasForeignKey(Prop => Prop.ProductId);
-        Builder.HasOne<ProductType>().WithMany().HasForeignKey(Prop => Prop.ProductTypeId);
-        Builder.HasOne<Supplier>().WithMany().HasForeignKey(Prop => Prop.SupplierId);
 
         Builder.Ignore(Prop => Prop.PurchasePrice);
     }

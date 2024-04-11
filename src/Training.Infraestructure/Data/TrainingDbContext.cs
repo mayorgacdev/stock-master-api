@@ -11,12 +11,17 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public DbSet<InvoiceLine> InvoiceLines => base.Set<InvoiceLine>();
     public DbSet<Product> Products => base.Set<Product>();
     public DbSet<ProductBrand> ProductBrands => base.Set<ProductBrand>();
+    public DbSet<ProductReturn> ProductReturns => base.Set<ProductReturn>();
     public DbSet<ProductType> ProductTypes => base.Set<ProductType>();
     public DbSet<ProductPrice> ProductPrices => base.Set<ProductPrice>();
     public DbSet<ProductPicture> ProductPictures => base.Set<ProductPicture>();
     public DbSet<Warehouse> Warehouses => base.Set<Warehouse>();
     public DbSet<Supplier> Suppliers => base.Set<Supplier>();
     public DbSet<ProductReturn> Deliveries => base.Set<ProductReturn>();
+    public DbSet<Part> Parts => base.Set<Part>();
+    public DbSet<Accesory> Accesories => base.Set<Accesory>();
+    public DbSet<AccesoryDetail> AccesoryDetails => base.Set<AccesoryDetail>();
+    public DbSet<PartDetail> PartDetails => base.Set<PartDetail>();
 
     public IReadRepository<Customer> CustomerReadRepository => new ReadRepository<Customer>(this, Mapper);
     public IReadRepository<Product> ProductReadRepository => new ReadRepository<Product>(this, Mapper);

@@ -5,7 +5,10 @@ namespace Training.Domain.Sales;
 public abstract class InvoiceLine
 {
     public Guid ProductId { get; set; } = Guid.Empty;
+    public Product Product { get; private set; } = default!;
     public Guid InvoiceRecordId { get; private set; } = Guid.Empty;
+    public InvoiceRecord InvoiceRecord { get; private set; } = default!;
+
     public string Description { get; private set; } = string.Empty;
     public int Quantity { get; private set; } = 1;
     public Money Price
@@ -13,6 +16,8 @@ public abstract class InvoiceLine
         get => this.Currency.Amount(this.Amount);
         private set => (this.Amount, this.Currency) = (value.Amount, value.Currency);
     }
+
+    public ICollection<ProductReturn> ProductReturns { get; private set; } = [];
 
     private decimal Amount { get; set; } = 0;       // Used by EF Core
     private Currency Currency { get; set; }         // Used by EF Core

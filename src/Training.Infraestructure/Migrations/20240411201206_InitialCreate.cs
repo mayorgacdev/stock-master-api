@@ -3,14 +3,33 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Training.Infraestructure.src.Training.Infraestructure.Data
+namespace Training.Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class TTT : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Accesory",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accesory", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
@@ -27,24 +46,6 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Deliveries",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InvoiceLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuantityReturned = table.Column<int>(type: "int", nullable: false),
-                    Reason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Deliveries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,24 +67,22 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 });
 
             migrationBuilder.CreateTable(
-                name: "InvoiceRecord",
+                name: "Part",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DeliveryPriceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IssueTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DueDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    PaymentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InvoiceRecord", x => x.Id);
+                    table.PrimaryKey("PK_Part", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,6 +171,147 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 });
 
             migrationBuilder.CreateTable(
+                name: "PartDetail",
+                columns: table => new
+                {
+                    AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IX_PartDetails_Part_PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartDetail", x => new { x.PartId, x.AccesoryId });
+                    table.ForeignKey(
+                        name: "FK_PartDetail_Part_IX_PartDetails_Part_PartId",
+                        column: x => x.IX_PartDetails_Part_PartId,
+                        principalTable: "Part",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "XI_PartDetails_Accesory_AccesoryId",
+                        column: x => x.AccesoryId,
+                        principalTable: "Accesory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoiceRecord",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DeliveryPriceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IssueTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    PaymentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceRecord", x => x.Id);
+                    table.ForeignKey(
+                        name: "IX_Customer_InvoiceRecord_Customer_Id",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "IX_InvoiceRecords_DeliveryPrice_DeliveryPriceId",
+                        column: x => x.DeliveryPriceId,
+                        principalTable: "DeliveryPrices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "IX_Vehicle_Invoices_Vehicle_Id",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductBrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    ReorderLevel = table.Column<int>(type: "int", nullable: false),
+                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "IX_ProductType_Product_ProductId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "IX_Products_ProductBrand_ProductBrandId",
+                        column: x => x.ProductBrandId,
+                        principalTable: "ProductBrand",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "IX_Supplier_Products_ProductId",
+                        column: x => x.SupplierId,
+                        principalTable: "Supplier",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "IX_Warehouse_Products_ProductId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccesoryDetail",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccesoryDetail", x => new { x.AccesoryId, x.ProductId });
+                    table.ForeignKey(
+                        name: "IX_AccesoryDetails_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "XI_AccesoryDetails_Accesory_AccesoryId",
+                        column: x => x.AccesoryId,
+                        principalTable: "Accesory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvoiceLines",
                 columns: table => new
                 {
@@ -187,76 +327,15 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 {
                     table.PrimaryKey("PK_InvoiceLines", x => new { x.ProductId, x.InvoiceRecordId });
                     table.ForeignKey(
-                        name: "FK_InvoiceLines_Deliveries_ProductId",
+                        name: "FK_InvoiceLines_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Deliveries",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InvoiceLines_InvoiceRecord_InvoiceRecordId",
+                        name: "IX_InvoiceRecord_Invoices_InvoiceRecord_Id",
                         column: x => x.InvoiceRecordId,
                         principalTable: "InvoiceRecord",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductBrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    ReorderLevel = table.Column<int>(type: "int", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductBrandId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProductTypeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductBrand_ProductBrandId",
-                        column: x => x.ProductBrandId,
-                        principalTable: "ProductBrand",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductBrand_ProductBrandId1",
-                        column: x => x.ProductBrandId1,
-                        principalTable: "ProductBrand",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_ProductType_ProductTypeId",
-                        column: x => x.ProductTypeId,
-                        principalTable: "ProductType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductType_ProductTypeId1",
-                        column: x => x.ProductTypeId1,
-                        principalTable: "ProductType",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_Supplier_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Supplier",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Warehouse_WarehouseId",
-                        column: x => x.WarehouseId,
-                        principalTable: "Warehouse",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,7 +347,6 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -277,16 +355,11 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 {
                     table.PrimaryKey("PK_ProductPicture", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductPicture_Products_ProductId",
+                        name: "IX_ProductPictures_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductPicture_Products_ProductId1",
-                        column: x => x.ProductId1,
-                        principalTable: "Products",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -306,12 +379,43 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 {
                     table.PrimaryKey("PK_ProductPrice", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductPrice_Products_ProductId",
+                        name: "IX_ProductPrices_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ProductReturn",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InvoiceLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityReturned = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    InvoiceLineProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InvoiceLineInvoiceRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductReturn", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductReturn_InvoiceLines_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
+                        columns: x => new { x.InvoiceLineProductId, x.InvoiceLineInvoiceRecordId },
+                        principalTable: "InvoiceLines",
+                        principalColumns: new[] { "ProductId", "InvoiceRecordId" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccesoryDetail_ProductId",
+                table: "AccesoryDetail",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvoiceLines_InvoiceRecordId",
@@ -319,19 +423,44 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 column: "InvoiceRecordId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvoiceRecord_CustomerId",
+                table: "InvoiceRecord",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceRecord_DeliveryPriceId",
+                table: "InvoiceRecord",
+                column: "DeliveryPriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceRecord_VehicleId",
+                table: "InvoiceRecord",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartDetail_AccesoryId",
+                table: "PartDetail",
+                column: "AccesoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartDetail_IX_PartDetails_Part_PartId",
+                table: "PartDetail",
+                column: "IX_PartDetails_Part_PartId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductPicture_ProductId",
                 table: "ProductPicture",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductPicture_ProductId1",
-                table: "ProductPicture",
-                column: "ProductId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductPrice_ProductId",
                 table: "ProductPrice",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductReturn_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
+                table: "ProductReturn",
+                columns: new[] { "InvoiceLineProductId", "InvoiceLineInvoiceRecordId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
@@ -345,19 +474,9 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 column: "ProductBrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductBrandId1",
-                table: "Products",
-                column: "ProductBrandId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductTypeId1",
-                table: "Products",
-                column: "ProductTypeId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_SupplierId",
@@ -374,13 +493,10 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "AccesoryDetail");
 
             migrationBuilder.DropTable(
-                name: "DeliveryPrices");
-
-            migrationBuilder.DropTable(
-                name: "InvoiceLines");
+                name: "PartDetail");
 
             migrationBuilder.DropTable(
                 name: "ProductPicture");
@@ -389,28 +505,43 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 name: "ProductPrice");
 
             migrationBuilder.DropTable(
-                name: "Vehicle");
+                name: "ProductReturn");
 
             migrationBuilder.DropTable(
-                name: "Deliveries");
+                name: "Part");
 
             migrationBuilder.DropTable(
-                name: "InvoiceRecord");
+                name: "Accesory");
+
+            migrationBuilder.DropTable(
+                name: "InvoiceLines");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "ProductBrand");
+                name: "InvoiceRecord");
 
             migrationBuilder.DropTable(
                 name: "ProductType");
+
+            migrationBuilder.DropTable(
+                name: "ProductBrand");
 
             migrationBuilder.DropTable(
                 name: "Supplier");
 
             migrationBuilder.DropTable(
                 name: "Warehouse");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryPrices");
+
+            migrationBuilder.DropTable(
+                name: "Vehicle");
         }
     }
 }

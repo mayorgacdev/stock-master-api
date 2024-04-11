@@ -1,4 +1,6 @@
-﻿namespace Training.Domain.Inventory;
+﻿using Training.Domain.Sales;
+
+namespace Training.Domain.Inventory;
 
 public class ProductReturn : Entity
 {
@@ -6,7 +8,8 @@ public class ProductReturn : Entity
     public Guid InvoiceLineId { get; private set; }
     public int QuantityReturned { get; private set; }
     public string Reason { get; private set; } = string.Empty;
-
+    public InvoiceLine InvoiceLine { get; private set; } = default!;
+    
     public static ProductReturn Create(Guid invoiceLineId, int quantityReturned, string reason)
         => new()
         {

@@ -8,7 +8,7 @@ using Training.Infraestructure.Data;
 
 #nullable disable
 
-namespace Training.Infraestructure.src.Training.Infraestructure.Data
+namespace Training.Infraestructure.Migrations
 {
     [DbContext(typeof(TrainingDbContext))]
     partial class TrainingDbContextModelSnapshot : ModelSnapshot
@@ -21,6 +21,141 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Training.Domain.Inventory.Accesory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("Amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Currency");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accesory", (string)null);
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.AccesoryDetail", b =>
+                {
+                    b.Property<Guid>("AccesoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("AccesoryId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("AccesoryDetail", (string)null);
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.Part", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("Amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Currency");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Part", (string)null);
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.PartDetail", b =>
+                {
+                    b.Property<Guid>("PartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccesoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IX_PartDetails_Part_PartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartId", "AccesoryId");
+
+                    b.HasIndex("AccesoryId");
+
+                    b.HasIndex("IX_PartDetails_Part_PartId");
+
+                    b.ToTable("PartDetail", (string)null);
+                });
 
             modelBuilder.Entity("Training.Domain.Inventory.Product", b =>
                 {
@@ -46,18 +181,13 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid>("ProductBrandId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductBrandId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProductTypeId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PurchasePriceAmount")
@@ -89,11 +219,7 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
 
                     b.HasIndex("ProductBrandId");
 
-                    b.HasIndex("ProductBrandId1");
-
                     b.HasIndex("ProductTypeId");
-
-                    b.HasIndex("ProductTypeId1");
 
                     b.HasIndex("SupplierId");
 
@@ -147,17 +273,12 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductPicture", (string)null);
                 });
@@ -214,6 +335,12 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                     b.Property<Guid>("InvoiceLineId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("InvoiceLineInvoiceRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InvoiceLineProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("QuantityReturned")
                         .HasColumnType("int");
 
@@ -230,7 +357,9 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
 
                     b.HasKey("Id");
 
-                    b.ToTable("Deliveries");
+                    b.HasIndex("InvoiceLineProductId", "InvoiceLineInvoiceRecordId");
+
+                    b.ToTable("ProductReturn");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductType", b =>
@@ -495,6 +624,12 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DeliveryPriceId");
+
+                    b.HasIndex("VehicleId");
+
                     b.ToTable("InvoiceRecord", (string)null);
                 });
 
@@ -545,83 +680,190 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                     b.HasDiscriminator().HasValue("ProductLine");
                 });
 
+            modelBuilder.Entity("Training.Domain.Inventory.AccesoryDetail", b =>
+                {
+                    b.HasOne("Training.Domain.Inventory.Accesory", "Accesory")
+                        .WithMany("AccesoryDetails")
+                        .HasForeignKey("AccesoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("XI_AccesoryDetails_Accesory_AccesoryId");
+
+                    b.HasOne("Training.Domain.Inventory.Product", "Product")
+                        .WithMany("AccesoryDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("IX_AccesoryDetails_Product_ProductId");
+
+                    b.Navigation("Accesory");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.PartDetail", b =>
+                {
+                    b.HasOne("Training.Domain.Inventory.Accesory", "Accesory")
+                        .WithMany("PartDetails")
+                        .HasForeignKey("AccesoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("XI_PartDetails_Accesory_AccesoryId");
+
+                    b.HasOne("Training.Domain.Inventory.Part", "Part")
+                        .WithMany("PartDetails")
+                        .HasForeignKey("IX_PartDetails_Part_PartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Accesory");
+
+                    b.Navigation("Part");
+                });
+
             modelBuilder.Entity("Training.Domain.Inventory.Product", b =>
                 {
-                    b.HasOne("Training.Domain.Inventory.ProductBrand", null)
-                        .WithMany()
+                    b.HasOne("Training.Domain.Inventory.ProductBrand", "ProductBrand")
+                        .WithMany("Products")
                         .HasForeignKey("ProductBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_Products_ProductBrand_ProductBrandId");
 
-                    b.HasOne("Training.Domain.Inventory.ProductBrand", null)
+                    b.HasOne("Training.Domain.Inventory.ProductType", "ProductType")
                         .WithMany("Products")
-                        .HasForeignKey("ProductBrandId1");
-
-                    b.HasOne("Training.Domain.Inventory.ProductType", null)
-                        .WithMany()
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_ProductType_Product_ProductId");
 
-                    b.HasOne("Training.Domain.Inventory.ProductType", null)
+                    b.HasOne("Training.Domain.Inventory.Supplier", "Supplier")
                         .WithMany("Products")
-                        .HasForeignKey("ProductTypeId1");
-
-                    b.HasOne("Training.Domain.Inventory.Supplier", null)
-                        .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_Supplier_Products_ProductId");
 
                     b.HasOne("Training.Domain.Inventory.Warehouse", "Warehouse")
                         .WithMany("Products")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_Warehouse_Products_ProductId");
+
+                    b.Navigation("ProductBrand");
+
+                    b.Navigation("ProductType");
+
+                    b.Navigation("Supplier");
 
                     b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductPicture", b =>
                 {
-                    b.HasOne("Training.Domain.Inventory.Product", null)
-                        .WithMany()
+                    b.HasOne("Training.Domain.Inventory.Product", "Product")
+                        .WithMany("ProductPictures")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_ProductPictures_Product_ProductId");
 
-                    b.HasOne("Training.Domain.Inventory.Product", null)
-                        .WithMany("ProductPictures")
-                        .HasForeignKey("ProductId1");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductPrice", b =>
                 {
-                    b.HasOne("Training.Domain.Inventory.Product", null)
-                        .WithMany()
+                    b.HasOne("Training.Domain.Inventory.Product", "Product")
+                        .WithMany("ProductPrices")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("IX_ProductPrices_Product_ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.ProductReturn", b =>
+                {
+                    b.HasOne("Training.Domain.Sales.InvoiceLine", "InvoiceLine")
+                        .WithMany("ProductReturns")
+                        .HasForeignKey("InvoiceLineProductId", "InvoiceLineInvoiceRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("InvoiceLine");
                 });
 
             modelBuilder.Entity("Training.Domain.Sales.InvoiceLine", b =>
                 {
-                    b.HasOne("Training.Domain.Sales.InvoiceRecord", null)
-                        .WithMany("Lines")
+                    b.HasOne("Training.Domain.Sales.InvoiceRecord", "InvoiceRecord")
+                        .WithMany("Invoices")
                         .HasForeignKey("InvoiceRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("IX_InvoiceRecord_Invoices_InvoiceRecord_Id");
 
-                    b.HasOne("Training.Domain.Inventory.ProductReturn", null)
+                    b.HasOne("Training.Domain.Inventory.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("InvoiceRecord");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Training.Domain.Sales.InvoiceRecord", b =>
+                {
+                    b.HasOne("Training.Domain.Sales.Customer", "Customer")
+                        .WithMany("InvoiceRecords")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("IX_Customer_InvoiceRecord_Customer_Id");
+
+                    b.HasOne("Training.Domain.Sales.DeliveryPrice", "DeliveryPrice")
+                        .WithMany("InvoiceRecords")
+                        .HasForeignKey("DeliveryPriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("IX_InvoiceRecords_DeliveryPrice_DeliveryPriceId");
+
+                    b.HasOne("Training.Domain.Sales.Vehicle", "Vehicle")
+                        .WithMany("Invoices")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("IX_Vehicle_Invoices_Vehicle_Id");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("DeliveryPrice");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.Accesory", b =>
+                {
+                    b.Navigation("AccesoryDetails");
+
+                    b.Navigation("PartDetails");
+                });
+
+            modelBuilder.Entity("Training.Domain.Inventory.Part", b =>
+                {
+                    b.Navigation("PartDetails");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.Product", b =>
                 {
+                    b.Navigation("AccesoryDetails");
+
                     b.Navigation("ProductPictures");
+
+                    b.Navigation("ProductPrices");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductBrand", b =>
@@ -634,14 +876,39 @@ namespace Training.Infraestructure.src.Training.Infraestructure.Data
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Training.Domain.Inventory.Supplier", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Training.Domain.Inventory.Warehouse", b =>
                 {
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Training.Domain.Sales.Customer", b =>
+                {
+                    b.Navigation("InvoiceRecords");
+                });
+
+            modelBuilder.Entity("Training.Domain.Sales.DeliveryPrice", b =>
+                {
+                    b.Navigation("InvoiceRecords");
+                });
+
+            modelBuilder.Entity("Training.Domain.Sales.InvoiceLine", b =>
+                {
+                    b.Navigation("ProductReturns");
+                });
+
             modelBuilder.Entity("Training.Domain.Sales.InvoiceRecord", b =>
                 {
-                    b.Navigation("Lines");
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("Training.Domain.Sales.Vehicle", b =>
+                {
+                    b.Navigation("Invoices");
                 });
 #pragma warning restore 612, 618
         }

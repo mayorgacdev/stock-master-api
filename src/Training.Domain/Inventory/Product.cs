@@ -19,6 +19,8 @@ public class Product : Entity
     /// </summary>
     public Guid SupplierId { get; private set; }
 
+    public Supplier Supplier { get; private set; } = default!;
+
     /// <summary>
     /// Gets the unique identifier of the warehouse where the product is stored.
     /// </summary>
@@ -31,10 +33,13 @@ public class Product : Entity
     /// </summary>
     public Guid ProductBrandId { get; private set; }
     
+    public ProductBrand ProductBrand { get; private set; } = default!;
     /// <summary>
     /// Gets the unique identifier of the type of the product.
     /// </summary>
     public Guid ProductTypeId { get; private set; }
+
+    public ProductType ProductType { get; private set; } = default!;
 
     /// <summary>
     /// Description of the product.
@@ -69,7 +74,10 @@ public class Product : Entity
 
     private Currency Currency { get; set; } // Used by EF Core
 
+    public ICollection<ProductPrice> ProductPrices { get; set; } = [];
     public ICollection<ProductPicture> ProductPictures { get; set; } = [];
+    public ICollection<AccesoryDetail> AccesoryDetails { get; set; } = [];
+
 
     public static Product Create(
         Guid supplierId,

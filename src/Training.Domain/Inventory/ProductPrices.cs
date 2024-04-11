@@ -20,6 +20,8 @@ public class ProductPrice : Entity
     /// </summary>
     public Guid ProductId { get; private set; } = Guid.Empty;
 
+    public Product Product { get; private set; } = default!;
+
     /// <summary>
     /// Gets the total price of the product.
     /// </summary>
