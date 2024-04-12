@@ -8,7 +8,6 @@ public static class ErrorCodes
     public const string InternalServerErrorCode = MID0001;
     public const string MID0001 = "MID0001";
 
-
     /// <summary>
     ///     Categoría CustomerService: SERVC0000
     /// <summary>

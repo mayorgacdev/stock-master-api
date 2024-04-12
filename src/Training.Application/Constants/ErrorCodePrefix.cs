@@ -18,5 +18,11 @@ public static class ErrorCodePrefix
     /// </summary>
     public const string CustomerServicePrefix = $"{SERV}C";
 
+    /// <summary>
+    ///     Prefijo para la clase: <see cref="ProductService" />
+    /// </summary>
+    public const string WarehouseServicePrefix = $"{SERV}W";
+
+
     #endregion
 }

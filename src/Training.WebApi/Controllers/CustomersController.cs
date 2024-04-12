@@ -1,23 +1,14 @@
-﻿using Microsoft.AspNetCore.OutputCaching;
-using Training.Application.Extensions;
-using Training.Application.Requests;
-using Training.Application.Sales.Requests.Customers;
-using Training.Common;
-using Training.Domain.Common;
+﻿namespace Training.WebApi.Controllers;
 
-namespace Training.WebApi;
-
-[ApiController]
-[Route("api/[controller]")]
-public class CustomersController(ICustomerService CustomerService) :  ControllerBase
+public class CustomersController(ICustomerService CustomerService) : TrainingControllerBase
 {
-    [HttpGet(Name = "GetCustomers")]
+    [HttpGet(Name = "FetchCustomers")]
     [ProducesResponseType(typeof(PagedResponse<CustomerInfo>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
     [OutputCache(Duration = 30)]
     public async Task<ActionResult<PagedResponse<CustomerInfo>>> FetchCustomersAsync([FromQuery] CustomerFilter Filter)
     {
-        return await CustomerService.SearchCustomers(Filter);
+        return await CustomerService.FetchCustomersByFilter(Filter);
     }
 
     [HttpPost]

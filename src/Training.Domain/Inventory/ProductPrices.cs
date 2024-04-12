@@ -50,6 +50,7 @@ public class ProductPrice : Entity
     /// <returns>A new ProductPrice instance.</returns>
     public static ProductPrice For(Product Product, Money Price, DateTime ValidFrom) => For(Product.Id, Price, ValidFrom);
 
+
     /// <summary>
     /// Creates a new instance of the ProductPrice class.
     /// </summary>
@@ -65,4 +66,5 @@ public class ProductPrice : Entity
             Price = Price,
             ValidFrom = ValidFrom
         };
+
 }

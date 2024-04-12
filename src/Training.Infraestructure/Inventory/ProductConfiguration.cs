@@ -34,16 +34,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         Builder.Property(Prop => Prop.Tax)
             .HasColumnType("decimal(18, 2)");
 
-        Builder.Property<decimal>("PurchasePriceAmount")
-            .HasColumnName("PurchasePrice")
-            .IsRequired()
-            .HasColumnType("decimal(18, 2)");
-
-        Builder.Property<Currency>("Currency")
-            .HasColumnName("Currency")
-            .HasConversion(currency => currency.Symbol, symbol => new Currency(symbol))
-            .IsRequired();
-
-        Builder.Ignore(Prop => Prop.PurchasePrice);
+        Builder.Ignore(Prop => Prop.ProductHistoric);
     }
 }

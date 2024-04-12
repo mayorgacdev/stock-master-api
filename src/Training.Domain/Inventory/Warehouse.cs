@@ -8,6 +8,11 @@ public class Warehouse : Entity
     public Warehouse() { }
 
     /// <summary>
+    /// Gets the name of the warehouse.
+    /// </summary>
+    public string Name { get; private set; } = string.Empty;
+   
+    /// <summary>
     /// Gets or sets the state where the warehouse is located.
     /// </summary>
     public string State { get; set; } = string.Empty;
@@ -38,20 +43,22 @@ public class Warehouse : Entity
     /// <param name="state"></param>
     /// <param name="city"></param>
     /// <returns></returns>
-    public static Warehouse Create(int max, string state, string city, int capacity)
+    public static Warehouse Create(string Name, int max, string state, string city, int capacity)
         => new()
         {
             Id = Guid.NewGuid(),
+            Name = Name,
             Max = max,
             State = state,
             City = city,
             Capacity = capacity
         };
 
-    public static Warehouse CreateWithId(Guid WarehouseId, int max,string state, string city, int capacity)
+    public static Warehouse CreateWithId(Guid warehouseId, string name, int max,string state, string city, int capacity)
         => new()
         {
-            Id = WarehouseId,
+            Id = warehouseId,
+            Name = name,
             Max = max,
             State = state,
             City = city,

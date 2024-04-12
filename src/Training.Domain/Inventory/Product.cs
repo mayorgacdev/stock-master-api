@@ -62,17 +62,11 @@ public class Product : Entity
     public decimal Tax { get; private set; }
 
     /// <summary>
-    /// Purchase Price very util for analysis.
+    /// Gets the total cost of the product.
     /// </summary>
-    public Money PurchasePrice
-    {
-        get => this.Currency.Amount(this.PurchasePriceAmount);
-        private set => (this.PurchasePriceAmount, this.Currency) = (value.Amount, value.Currency);
-    }
+    public decimal Profit { get; private set; }
 
-    private decimal PurchasePriceAmount { get; set; } // Used by EF Core
-
-    private Currency Currency { get; set; } // Used by EF Core
+    public ProductPrice ProductHistoric { get; private set; } = default!;
 
     public ICollection<ProductPrice> ProductPrices { get; set; } = [];
     public ICollection<ProductPicture> ProductPictures { get; set; } = [];
@@ -88,20 +82,18 @@ public class Product : Entity
         string description,
         int stock,
         int reorderLevel,
-        decimal tax,
-        Money purchasePrice)
-        => new Product()
-        {
-            Id = Guid.NewGuid(),
-            SupplierId = supplierId,
-            WarehouseId = wareHouseId,
-            ProductBrandId = productBrandId,
-            ProductTypeId = productTypeId,
-            Name = name,
-            Description = description,
-            Stock = stock,
-            ReorderLevel = reorderLevel,
-            Tax = tax,
-            PurchasePrice = purchasePrice,
-        };
+        decimal tax)
+            => new Product()
+            {
+                Id = Guid.NewGuid(),
+                SupplierId = supplierId,
+                WarehouseId = wareHouseId,
+                ProductBrandId = productBrandId,
+                ProductTypeId = productTypeId,
+                Name = name,
+                Description = description,
+                Stock = stock,
+                ReorderLevel = reorderLevel,
+                Tax = tax
+            };
 }

@@ -120,4 +120,31 @@
   <data name="SERVC0001" xml:space="preserve">
     <value>Already exist a record with that name</value>
   </data>
+  <data name="SERVC0002" xml:space="preserve">
+    <value>Product brand doesn't exist</value>
+  </data>
+  <data name="SERVC0003" xml:space="preserve">
+    <value>Product type brand doesn't exist</value>
+  </data>
+  <data name="SERVC0004" xml:space="preserve">
+    <value>Supplier doesn't exist</value>
+  </data>
+  <data name="SERVC0005" xml:space="preserve">
+    <value>Warehouse doesn't exist</value>
+  </data>
+  <data name="SERVC0006" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SERVC0007" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SERVC0008" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SERVC0009" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SERVC0010" xml:space="preserve">
+    <value />
+  </data>
 </root>
