@@ -2,6 +2,11 @@
 
 public class DeliveryPrice : Entity
 {
+    private DeliveryPrice() 
+    {
+        InvoiceRecords = new HashSet<InvoiceRecord>();
+    }
+
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     private decimal Amount { get; set; }
@@ -21,5 +26,5 @@ public class DeliveryPrice : Entity
             Description = description
         };
 
-    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; } = new List<InvoiceRecord>();
+    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; }
 }

@@ -1,13 +1,16 @@
-﻿using Training.Domain.Sales;
-
-namespace Training.Domain.Inventory;
+﻿namespace Training.Domain.Inventory;
 
 /// <summary>
 /// Represents a product in the SellNet domain.
 /// </summary>
 public class Product : Entity
 {
-    private Product() { }
+    private Product() 
+    {
+        ProductPrices = new HashSet<ProductPrice>();
+        ProductPictures = new HashSet<ProductPicture>();
+        AccesoryDetails = new HashSet<AccesoryDetail>();
+    }
     
     /// <summary>
     /// Gets the name of the product.
@@ -68,10 +71,9 @@ public class Product : Entity
 
     public ProductPrice ProductHistoric { get; private set; } = default!;
 
-    public ICollection<ProductPrice> ProductPrices { get; set; } = [];
-    public ICollection<ProductPicture> ProductPictures { get; set; } = [];
-    public ICollection<AccesoryDetail> AccesoryDetails { get; set; } = [];
-
+    public ICollection<ProductPrice> ProductPrices { get; set; }
+    public ICollection<ProductPicture> ProductPictures { get; set; }
+    public ICollection<AccesoryDetail> AccesoryDetails { get; set; }
 
     public static Product Create(
         Guid supplierId,
@@ -83,7 +85,7 @@ public class Product : Entity
         int stock,
         int reorderLevel,
         decimal tax)
-            => new Product()
+            => new()
             {
                 Id = Guid.NewGuid(),
                 SupplierId = supplierId,

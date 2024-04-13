@@ -2,7 +2,11 @@
 
 public class InvoiceRecord : Entity
 {
-    private InvoiceRecord() { }
+    private InvoiceRecord() 
+    {
+        Invoices = new HashSet<InvoiceLine>();
+    }
+
     public Guid CustomerId { get; internal set; }
     public Customer Customer { get; internal set; } = default!;
 
@@ -17,7 +21,7 @@ public class InvoiceRecord : Entity
     public DateOnly DueDate { get; internal set; }
     public DateTime? PaymentTime { get; internal set; }
 
-    public ICollection<InvoiceLine> Invoices { get; } = new HashSet<InvoiceLine>();
+    public ICollection<InvoiceLine> Invoices { get; }
 
     public Money TotalAmount =>
         this.Invoices.Aggregate(Money.Zero, (total, line) => total + line.Price);

@@ -2,12 +2,16 @@
 
 public class Supplier : Entity
 {
-    private Supplier() { }
+    private Supplier() 
+    {
+        Products = new HashSet<Product>();
+    }
 
     public string Name { get; private set; } = string.Empty;
     public string Address { get; private set; } = string.Empty;
     public string Phone { get; private set; } = string.Empty;
     public string Email { get; set; } = string.Empty;   
+
     public static Supplier Create(string name, string address, string email, string phone)
         => new()
         {
@@ -18,5 +22,5 @@ public class Supplier : Entity
             Phone = phone
         };
 
-    public ICollection<Product> Products { get; private set; } = new List<Product>();
+    public ICollection<Product> Products { get; private set; }
 }

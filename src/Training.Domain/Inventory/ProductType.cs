@@ -8,7 +8,10 @@ public class ProductType : Entity
     /// <summary>
     /// Private constructor to prevent direct instantiation. Use the Create method instead.
     /// </summary>
-    private ProductType() { }
+    private ProductType() 
+    {
+        Products = new HashSet<Product>();
+    }
 
     /// <summary>
     /// Gets the name of the product type.
@@ -18,7 +21,7 @@ public class ProductType : Entity
     /// <summary>
     /// Gets the collection of products associated with the product type.
     /// </summary>
-    public ICollection<Product> Products { get; private set; } = new List<Product>();
+    public ICollection<Product> Products { get; private set; }
 
     /// <summary>
     /// Creates a new instance of the ProductType class.

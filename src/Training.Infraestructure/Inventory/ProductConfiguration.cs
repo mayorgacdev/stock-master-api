@@ -33,7 +33,5 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         Builder.Property(Prop => Prop.Tax)
             .HasColumnType("decimal(18, 2)");
-
-        Builder.Ignore(Prop => Prop.ProductHistoric);
     }
 }

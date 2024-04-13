@@ -2,7 +2,10 @@
 
 public class Customer : Entity
 {
-    public Customer() { }
+    private Customer()
+    {
+        InvoiceRecords = new HashSet<InvoiceRecord>();
+    }
     public string FirtsName { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
@@ -18,5 +21,5 @@ public class Customer : Entity
             Phone = phone
         };
 
-    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; } = new List<InvoiceRecord>();
+    public ICollection<InvoiceRecord> InvoiceRecords { get; private set; }
 }

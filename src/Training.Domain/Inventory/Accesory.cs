@@ -15,6 +15,20 @@ public class Accesory : Entity
     /// <summary>
     /// Gets the total price of the product.
     /// </summary>
+    public Money PurchasePrice
+    {
+        get => this.Currency.Amount(this.PurchaseAmount);
+        private set => (this.PurchaseAmount, this.Currency) = (value.Amount, value.Currency);
+    }
+
+    /// <summary>
+    /// Private field representing the amount of the product price.
+    /// </summary>
+    private decimal PurchaseAmount { get; set; } = 0;
+
+    /// <summary>
+    /// Gets the total price of the product.
+    /// </summary>
     public Money Price
     {
         get => this.Currency.Amount(this.Amount);
@@ -30,10 +44,12 @@ public class Accesory : Entity
     /// Private field representing the currency of the product price.
     /// </summary>
     private Currency Currency { get; set; }
-    public static Accesory Create(Money price, string description, string notes, bool isActive)
+
+    public static Accesory Create(Money price, Money purchasePrice, string description, string notes, bool isActive)
         => new()
            {
                Id = Guid.NewGuid(),
+               PurchasePrice = purchasePrice,
                Price = price,
                Description = description,
                Notes = notes,

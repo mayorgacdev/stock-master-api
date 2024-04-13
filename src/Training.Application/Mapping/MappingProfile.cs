@@ -14,12 +14,10 @@ public class MappingProfile : Profile
         CreateMap<Customer, CreateCurstomerRequest>().ReverseMap();
 
         CreateMap<Product, ProductInfo>()
-            .ForMember(Prop => Prop.SupplierName, Opt => Opt.MapFrom(Prop => Prop.Supplier.Name))
-            .ForMember(Prop => Prop.BrandName, Opt => Opt.MapFrom(Prop => Prop.ProductBrand.Name))
-            .ForMember(Prop => Prop.Price, Opt => Opt.MapFrom(Prop => Prop.ProductHistoric.Price.Amount))
-            .ForMember(Prop => Prop.Currency, Opt => Opt.MapFrom(Prop => Prop.ProductHistoric.Price.Currency.Symbol))
-            .ForMember(Prop => Prop.WarehouseName, Opt => Opt.MapFrom(Prop => Prop.Warehouse.Name))
-            .ForMember(Prop => Prop.TypeName, Opt => Opt.MapFrom(Prop => Prop.ProductType.Name))
-            .ForMember(Prop => Prop.ProductPictureInfos, Opt => Opt.MapFrom(Prop => Prop.ProductPictures));
+            .ForMember(Prop => Prop.SupplierInfo, Opt => Opt.MapFrom(Prop => Prop.Supplier.Name))
+            .ForMember(Prop => Prop.BrandInfo, Opt => Opt.MapFrom(Prop => Prop.ProductBrand.Name))
+            .ForMember(Prop => Prop.WarehouseInfo, Opt => Opt.MapFrom(Prop => Prop.Warehouse.Name))
+            .ForMember(Prop => Prop.ProductTypeInfo, Opt => Opt.MapFrom(Prop => Prop.ProductType.Name))
+            .ForMember(Prop => Prop.ProductPicturesInfo, Opt => Opt.MapFrom(Prop => Prop.ProductPictures));
     }
 }

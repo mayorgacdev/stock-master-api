@@ -4,6 +4,8 @@ namespace Training.Domain.Inventory;
 
 public class ProductReturn : Entity
 {
+    private ProductReturn() { }
+
     public DateTime ReturnDate { get; private set; }
     public Guid InvoiceLineId { get; private set; }
     public int QuantityReturned { get; private set; }

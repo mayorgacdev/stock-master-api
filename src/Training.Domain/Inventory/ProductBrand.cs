@@ -8,7 +8,10 @@ public class ProductBrand : Entity
     /// <summary>
     /// Private constructor to prevent direct instantiation. Use the Create method instead.
     /// </summary>
-    private ProductBrand() { }
+    private ProductBrand() 
+    {
+        Products = new HashSet<Product>();
+    }
 
     /// <summary>
     /// Gets the name of the product brand.
@@ -18,7 +21,7 @@ public class ProductBrand : Entity
     /// <summary>
     /// Gets the collection of products associated with the product brand.
     /// </summary>
-    public ICollection<Product> Products { get; private set; } = new List<Product>();
+    public ICollection<Product> Products { get; private set; }
     
     /// <summary>
     /// Creates a new instance of the ProductBrand class.

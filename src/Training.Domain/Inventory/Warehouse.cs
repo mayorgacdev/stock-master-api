@@ -5,7 +5,10 @@
 /// </summary>
 public class Warehouse : Entity
 {
-    public Warehouse() { }
+    private Warehouse() 
+    {
+        Products = new HashSet<Product>();
+    }
 
     /// <summary>
     /// Gets the name of the warehouse.
@@ -35,7 +38,7 @@ public class Warehouse : Entity
     /// <summary>
     /// Products stored in the warehouse.
     /// </summary>
-    public ICollection<Product> Products { get;  set; } = new List<Product>();
+    public ICollection<Product> Products { get;  set; }
 
     /// <summary>
     /// Creates a new instance of the Warehouse class.
