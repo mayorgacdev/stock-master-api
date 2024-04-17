@@ -69,8 +69,6 @@ public class Product : Entity
     /// </summary>
     public decimal Profit { get; private set; }
 
-    public ProductPrice ProductHistoric { get; private set; } = default!;
-
     public ICollection<ProductPrice> ProductPrices { get; set; }
     public ICollection<ProductPicture> ProductPictures { get; set; }
     public ICollection<AccesoryDetail> AccesoryDetails { get; set; }
@@ -84,18 +82,25 @@ public class Product : Entity
         string description,
         int stock,
         int reorderLevel,
-        decimal tax)
-            => new()
-            {
-                Id = Guid.NewGuid(),
-                SupplierId = supplierId,
-                WarehouseId = wareHouseId,
-                ProductBrandId = productBrandId,
-                ProductTypeId = productTypeId,
-                Name = name,
-                Description = description,
-                Stock = stock,
-                ReorderLevel = reorderLevel,
-                Tax = tax
-            };
+        decimal tax,
+        decimal profit,
+        params ProductPicture[] pictures)
+    {
+        Product product = new()
+        {
+            SupplierId = supplierId,
+            WarehouseId = wareHouseId,
+            ProductBrandId = productBrandId,
+            ProductTypeId = productTypeId,
+            Name = name,
+            Description = description,
+            Stock = stock,
+            ReorderLevel = reorderLevel,
+            Tax = tax,
+            Profit = profit
+        };
+
+        product.ProductPictures = ProductPicture.CreateMany(product, pictures).ToArray();
+        return product;
+    }
 }

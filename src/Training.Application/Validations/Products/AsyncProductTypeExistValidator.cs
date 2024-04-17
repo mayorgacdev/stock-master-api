@@ -9,14 +9,14 @@ using Training.Domain.Inventory;
 using Training.Infraestructure.Interfaces;
 using Training.Infraestructure.Data.Specifications;
 
-public class AsyncProductTypeExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string?>
+public class AsyncProductTypeExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string>
 {
     public override string Name => "AsyncProductTypeExistValidator";
 
-    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string? Value, CancellationToken Cancellation)
+    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
         var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.Include(Prop => Prop.ProductType).ByTypeName(Value);
+        Specification?.Query.ByProductTypeId(Guid.Parse(Value));
 
         var ProductType = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
         return ProductType is not null;

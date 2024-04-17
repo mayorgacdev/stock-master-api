@@ -26,6 +26,8 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public IReadRepository<Customer> CustomerReadRepository => new ReadRepository<Customer>(this, Mapper);
     public IReadRepository<Product> ProductReadRepository => new ReadRepository<Product>(this, Mapper);
     public IRepository<Customer> CustomerRepository => new Repository<Customer>(this, Mapper);
+    public IRepository<Product> ProductRepository => new Repository<Product>(this, Mapper);
+    public IRepository<ProductPicture> ProductPictureRepository => new Repository<ProductPicture>(this, Mapper);
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {

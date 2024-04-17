@@ -8,6 +8,7 @@ public class Accesory : Entity
         this.PartDetails= new HashSet<PartDetail>();
     }
 
+    public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public string Notes { get; private set; } = string.Empty;
     public bool IsActive { get; private set; }
@@ -45,12 +46,13 @@ public class Accesory : Entity
     /// </summary>
     private Currency Currency { get; set; }
 
-    public static Accesory Create(Money price, Money purchasePrice, string description, string notes, bool isActive)
+    public static Accesory Create(Money price, Money purchasePrice, string name, string description, string notes, bool isActive)
         => new()
            {
                Id = Guid.NewGuid(),
                PurchasePrice = purchasePrice,
                Price = price,
+               Name = name,
                Description = description,
                Notes = notes,
                IsActive = isActive

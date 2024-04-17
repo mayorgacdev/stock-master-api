@@ -16,9 +16,11 @@ namespace Training.Infraestructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    PurchaseAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -74,6 +76,7 @@ namespace Training.Infraestructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    PurchaseAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -157,6 +160,7 @@ namespace Training.Infraestructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
@@ -176,9 +180,7 @@ namespace Training.Infraestructure.Migrations
                 {
                     AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IX_PartDetails_Part_PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -251,8 +253,7 @@ namespace Training.Infraestructure.Migrations
                     Stock = table.Column<int>(type: "int", nullable: false),
                     ReorderLevel = table.Column<int>(type: "int", nullable: false),
                     Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -345,7 +346,7 @@ namespace Training.Infraestructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PictureUrl = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -413,9 +414,20 @@ namespace Training.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Accesory_Name",
+                table: "Accesory",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AccesoryDetail_ProductId",
                 table: "AccesoryDetail",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryPrices_Name",
+                table: "DeliveryPrices",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvoiceLines_InvoiceRecordId",
@@ -438,6 +450,12 @@ namespace Training.Infraestructure.Migrations
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Part_Name",
+                table: "Part",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PartDetail_AccesoryId",
                 table: "PartDetail",
                 column: "AccesoryId");
@@ -446,6 +464,12 @@ namespace Training.Infraestructure.Migrations
                 name: "IX_PartDetail_IX_PartDetails_Part_PartId",
                 table: "PartDetail",
                 column: "IX_PartDetails_Part_PartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductBrand_Name",
+                table: "ProductBrand",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductPicture_ProductId",
@@ -487,6 +511,24 @@ namespace Training.Infraestructure.Migrations
                 name: "IX_Products_WarehouseId",
                 table: "Products",
                 column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductType_Name",
+                table: "ProductType",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Supplier_Email",
+                table: "Supplier",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Warehouse_Name",
+                table: "Warehouse",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />

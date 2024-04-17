@@ -5,7 +5,8 @@ public class ProductPictureConfiguration : IEntityTypeConfiguration<ProductPictu
     public void Configure(EntityTypeBuilder<ProductPicture> Builder)
     {
         Builder.Property(Prop => Prop.Id).ValueGeneratedOnAdd();
-        Builder.Property(Prop => Prop.PictureUrl).HasMaxLength(256).IsRequired();
+        Builder.Property(Prop => Prop.PictureUrl).IsRequired();
+
         Builder.ToTable(nameof(ProductPicture));
     }
 }

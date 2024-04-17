@@ -12,6 +12,4 @@ public class ProductInfo
     public int Stock { get; set; }
     public int ReorderLevel { get; set; }
     public decimal TaxRate { get; set; }
-    public ProductPriceInfo[] ProductPricesInfo { get; set; } = Array.Empty<ProductPriceInfo>();
-    public ProductPicturesInfo[] ProductPicturesInfo { get; set; } = Array.Empty<ProductPicturesInfo>();
 }

@@ -133,7 +133,7 @@
     <value>Warehouse doesn't exist</value>
   </data>
   <data name="SERVC0006" xml:space="preserve">
-    <value />
+    <value>Image URL must be unique</value>
   </data>
   <data name="SERVC0007" xml:space="preserve">
     <value />

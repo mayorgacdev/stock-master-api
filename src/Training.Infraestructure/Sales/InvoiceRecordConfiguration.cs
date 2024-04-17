@@ -12,7 +12,10 @@ public class InvoiceRecordConfiguration : IEntityTypeConfiguration<InvoiceRecord
 
         Builder.HasMany(Prop => Prop.Invoices).WithOne(Prop => Prop.InvoiceRecord)
             .HasForeignKey(Prop => Prop.InvoiceRecordId).HasConstraintName("IX_InvoiceRecord_Invoices_InvoiceRecord_Id");
+        
+        Builder.Ignore(Prop => Prop.TotalAmount);
 
+        Builder.HasQueryFilter(Prop => Prop.DeletedAt == null);
         Builder.ToTable(nameof(InvoiceRecord));
     }
 }

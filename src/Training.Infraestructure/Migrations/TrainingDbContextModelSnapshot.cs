@@ -51,15 +51,26 @@ namespace Training.Infraestructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<decimal>("PurchaseAmount")
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("PurchaseAmount");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Accesory", (string)null);
                 });
@@ -118,10 +129,17 @@ namespace Training.Infraestructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<decimal>("PurchaseAmount")
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("PurchaseAmount");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Part", (string)null);
                 });
@@ -134,19 +152,13 @@ namespace Training.Infraestructure.Migrations
                     b.Property<Guid>("AccesoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("IX_PartDetails_Part_PartId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Notes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("PartId", "AccesoryId");
 
@@ -165,11 +177,6 @@ namespace Training.Infraestructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Currency");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -190,9 +197,8 @@ namespace Training.Infraestructure.Migrations
                     b.Property<Guid>("ProductTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("PurchasePriceAmount")
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("PurchasePrice");
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ReorderLevel")
                         .HasColumnType("int");
@@ -250,6 +256,9 @@ namespace Training.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("ProductBrand", (string)null);
                 });
 
@@ -267,8 +276,7 @@ namespace Training.Infraestructure.Migrations
 
                     b.Property<string>("PictureUrl")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -384,6 +392,9 @@ namespace Training.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("ProductType", (string)null);
                 });
 
@@ -424,6 +435,9 @@ namespace Training.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Supplier", (string)null);
                 });
 
@@ -450,6 +464,11 @@ namespace Training.Infraestructure.Migrations
                     b.Property<int>("Max")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -459,6 +478,9 @@ namespace Training.Infraestructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Warehouse", (string)null);
                 });
@@ -538,6 +560,9 @@ namespace Training.Infraestructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("DeliveryPrices");
                 });

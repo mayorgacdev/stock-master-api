@@ -16,7 +16,7 @@ using static Training.Common.ContextData;
 [ErrorCategory(nameof(CustomerService))]
 [ErrorCodePrefix(CustomerServicePrefix)]
 public class CustomerService(IUnitOfWork UnitOfWork, 
-    ISingleResultSpecification<Customer> Specification)
+    ISingleResultSpecification<Customer> Specification) : ICustomerService
 {
     [MethodId("DA73FB1A-07F1-4A6B-B5D8-F82C9F181479")]
     public async Task<PagedResponse<CustomerInfo>> FetchCustomersByFilter(CustomerFilter Filter)

@@ -9,14 +9,14 @@ using Training.Domain.Inventory;
 using Training.Infraestructure.Data.Specifications;
 using Training.Infraestructure.Interfaces;
 
-public class AsyncProductBrandExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string?>
+public class AsyncProductBrandExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string>
 {
     public override string Name => "AsyncProductBrandExistValidator";
 
-    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string? Value, CancellationToken Cancellation)
+    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
         var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.Include(Prop => Prop.ProductBrand).ByBrandName(Value);
+        Specification?.Query.ByBrandId(Guid.Parse(Value));
 
         var ProductBrand = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
         return ProductBrand is not null;

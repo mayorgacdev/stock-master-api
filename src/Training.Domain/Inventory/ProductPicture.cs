@@ -1,4 +1,6 @@
-﻿namespace Training.Domain.Inventory;
+﻿using System;
+
+namespace Training.Domain.Inventory;
 
 /// <summary>
 /// Represents a picture associated with a product in the SellNet domain.
@@ -27,11 +29,17 @@ public class ProductPicture : Entity
     /// </summary>
     /// <param name="pictureUrl">The name of the product brand.</param>
     /// <returns>A new productPicture instance.</returns>
-    public static ProductPicture Create(Guid producId, string pictureUrl)
-        => new()
+    public static IEnumerable<ProductPicture> CreateMany(Product product, IEnumerable<ProductPicture> productPictures)
+        => productPictures.Select((productPicture, index) => new ProductPicture()
         {
             Id = Guid.NewGuid(),
-            ProductId = producId,
-            PictureUrl = pictureUrl
+            Product = product,
+            PictureUrl = productPicture.PictureUrl
+        });
+
+    public static ProductPicture Create(string PictureUrl)
+        => new()
+        {
+            PictureUrl = PictureUrl
         };
 }

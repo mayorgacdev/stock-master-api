@@ -9,14 +9,14 @@ using Training.Domain.Inventory;
 using Training.Infraestructure.Interfaces;
 using Training.Infraestructure.Data.Specifications;
 
-public class AsyncWarehouseExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string?>
+public class AsyncWarehouseExistValidator<TRequest> : AsyncPropertyValidator<TRequest, string>
 {
     public override string Name => "AsyncWarehouseExistValidator";
 
-    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string? Value, CancellationToken Cancellation)
+    public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
         var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.Include(Prop => Prop.Warehouse).ByWarehouseName(Value);
+        Specification?.Query.ByWarehouseId(Guid.Parse(Value));
 
         var Warehouse = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
         return Warehouse is not null;

@@ -13,8 +13,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(255)
             .IsRequired();
 
-        Builder.HasQueryFilter(Prop => Prop.DeletedAt != null);
-
         Builder.HasMany(Prop => Prop.ProductPictures)
             .WithOne(Prop => Prop.Product).HasForeignKey(Prop => Prop.ProductId)
             .HasConstraintName("IX_ProductPictures_Product_ProductId");
@@ -33,5 +31,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         Builder.Property(Prop => Prop.Tax)
             .HasColumnType("decimal(18, 2)");
+
+        Builder.HasQueryFilter(Prop => Prop.DeletedAt == null);
     }
 }
