@@ -136,15 +136,15 @@
     <value>Image URL must be unique</value>
   </data>
   <data name="SERVC0007" xml:space="preserve">
-    <value />
+    <value>The warehouse exist, create a new one</value>
   </data>
   <data name="SERVC0008" xml:space="preserve">
-    <value />
+    <value>The Brand exist, create a new one</value>
   </data>
   <data name="SERVC0009" xml:space="preserve">
-    <value />
+    <value>The ProductType exist, create a new one</value>
   </data>
   <data name="SERVC0010" xml:space="preserve">
-    <value />
+    <value>The Supplier exist, create a new one</value>
   </data>
 </root>

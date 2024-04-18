@@ -7,6 +7,10 @@ public interface IUnitOfWork : IDisposable
     IReadRepository<Product> ProductReadRepository { get; }
     IRepository<Product> ProductRepository { get; }
     IRepository<ProductPicture> ProductPictureRepository { get; }
+    IRepository<Supplier> SupplierRepository { get; }
+    IRepository<Warehouse> WarehouseRepository { get; }
+    IRepository<ProductBrand> ProductBrandRepository { get; }
+    IRepository<ProductType> ProductTypeRepository { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

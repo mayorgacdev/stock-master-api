@@ -1,6 +1,4 @@
-﻿using Training.Application.Requests.Products;
-
-namespace Training.WebApi.Controllers;
+﻿namespace Training.WebApi.Controllers;
 
 public class WarehouseController(IWarehouseService WarehouseService) : TrainingControllerBase
 {

@@ -11,13 +11,12 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public DbSet<InvoiceLine> InvoiceLines => base.Set<InvoiceLine>();
     public DbSet<Product> Products => base.Set<Product>();
     public DbSet<ProductBrand> ProductBrands => base.Set<ProductBrand>();
-    public DbSet<ProductReturn> ProductReturns => base.Set<ProductReturn>();
     public DbSet<ProductType> ProductTypes => base.Set<ProductType>();
     public DbSet<ProductPrice> ProductPrices => base.Set<ProductPrice>();
     public DbSet<ProductPicture> ProductPictures => base.Set<ProductPicture>();
     public DbSet<Warehouse> Warehouses => base.Set<Warehouse>();
     public DbSet<Supplier> Suppliers => base.Set<Supplier>();
-    public DbSet<ProductReturn> Deliveries => base.Set<ProductReturn>();
+    public DbSet<ProductReturn> ProductReturns => base.Set<ProductReturn>();
     public DbSet<Part> Parts => base.Set<Part>();
     public DbSet<Accesory> Accesories => base.Set<Accesory>();
     public DbSet<AccesoryDetail> AccesoryDetails => base.Set<AccesoryDetail>();
@@ -28,6 +27,10 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public IRepository<Customer> CustomerRepository => new Repository<Customer>(this, Mapper);
     public IRepository<Product> ProductRepository => new Repository<Product>(this, Mapper);
     public IRepository<ProductPicture> ProductPictureRepository => new Repository<ProductPicture>(this, Mapper);
+    public IRepository<Supplier> SupplierRepository => new Repository<Supplier>(this, Mapper);
+    public IRepository<Warehouse> WarehouseRepository => new Repository<Warehouse>(this, Mapper);
+    public IRepository<ProductBrand> ProductBrandRepository => new Repository<ProductBrand>(this, Mapper);
+    public IRepository<ProductType> ProductTypeRepository => new Repository<ProductType>(this, Mapper);
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {

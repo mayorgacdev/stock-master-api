@@ -14,6 +14,7 @@ using Training.Domain.Inventory;
 using Training.Application.Sales.Requests.Products;
 using Training.Application.Requests.Products;
 using Training.Application.Mapping;
+using Training.Application.Requests.Warehouse;
 
 [GenerateAutomaticInterface]
 [Service<IWarehouseService>]
@@ -21,12 +22,12 @@ using Training.Application.Mapping;
 [ErrorCodePrefix(WarehouseServicePrefix)]
 public partial class WarehouseService(
     IUnitOfWork UnitOfWork, 
-    ISingleResultSpecification<Product> Specification) : IWarehouseService
+    ISpecificationGroup SpecificationGroup) : IWarehouseService
 {
     [MethodId("0E05AE33-4204-40AE-A24E-6D3DE9E15FBE")]
     public async Task<PagedResponse<ProductInfo>> FetchProductsByFilter(ProductFilter Filter)
     {
-        Specification.Query
+        SpecificationGroup.ProductSpecification.Query
             .IncludeAll()
             .ByName(Filter.Name)
             .ByBrandName(Filter.BrandName)
@@ -36,15 +37,16 @@ public partial class WarehouseService(
             .ApplyOrdering(Filter);
 
         return await UnitOfWork.ProductReadRepository
-            .ProjectToListAsync<ProductInfo>(Specification, Filter, default);
+            .ProjectToListAsync<ProductInfo>(SpecificationGroup.ProductSpecification, Filter, default);
     }
 
     public async Task<EntityId> CreateProductAsync(CreateProductRequest Request)
     {
-        await Request.ValidateAndThrowOnFailuresAsync(Key(nameof(IUnitOfWork)).Value(UnitOfWork)
-            .Key(nameof(ISingleResultSpecification<Product>)).Value(Specification));
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<Product>)).Value(SpecificationGroup.ProductSpecification));
 
-        ProductPicture[] ProductPictures = Request.ProductPictureRequest.Select(Req => Req.AsProductPicture()).ToArray();
+        IEnumerable<ProductPicture> ProductPictures = Request.ProductPictureRequest.Select(Req => Req.AsProductPicture());
         
         return (await UnitOfWork.ProductRepository.AddAsync(
             Product.Create(
@@ -58,7 +60,45 @@ public partial class WarehouseService(
                 Request.ReorderLevel,
                 Request.TaxRate,
                 Request.Profit,
-                ProductPictures
-                ))).Id;
+                ProductPictures))).Id;
+    }
+
+    public async Task<EntityId> CreateSupplierAsync(CreateSupplierRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<Supplier>)).Value(SpecificationGroup.SupplierSpecification));
+
+        return (await UnitOfWork.SupplierRepository.AddAsync(
+            Supplier.Create(
+                Request.Name, 
+                Request.Address, 
+                Request.Email,
+                Request.Phone))).Id;
+    }
+
+    public async Task<EntityId> CreateWarehouseAsync(CreateWarehouseRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<Warehouse>)).Value(SpecificationGroup.WarehouseSpecification));
+
+        return (await UnitOfWork.WarehouseRepository.AddAsync(
+            Warehouse.Create(
+                Request.Name, 
+                Request.Max, 
+                Request.State,
+                Request.City, 
+                Request.Capacity))).Id;
+    }
+
+    public async Task<EntityId> CreateProductTypeAsync(CreateProductTypeRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+                       Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+                       Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
+
+        return (await UnitOfWork.ProductTypeRepository.AddAsync(
+                       ProductType.Create(Request.Name))).Id;
     }
 }

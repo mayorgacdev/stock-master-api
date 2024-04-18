@@ -84,9 +84,9 @@ public class Product : Entity
         int reorderLevel,
         decimal tax,
         decimal profit,
-        params ProductPicture[] pictures)
+        IEnumerable<ProductPicture> pictures)
     {
-        Product product = new()
+        Product Product = new()
         {
             SupplierId = supplierId,
             WarehouseId = wareHouseId,
@@ -100,7 +100,7 @@ public class Product : Entity
             Profit = profit
         };
 
-        product.ProductPictures = ProductPicture.CreateMany(product, pictures).ToArray();
-        return product;
+        Product.ProductPictures = ProductPicture.CreateMany(Product, pictures).ToArray();
+        return Product;
     }
 }

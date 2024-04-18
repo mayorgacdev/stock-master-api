@@ -18,7 +18,9 @@ public class AsyncProductTypeExistValidator<TRequest> : AsyncPropertyValidator<T
         var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
         Specification?.Query.ByProductTypeId(Guid.Parse(Value));
 
-        var ProductType = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+        var ProductType = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.
+            ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+        
         return ProductType is not null;
     }
 

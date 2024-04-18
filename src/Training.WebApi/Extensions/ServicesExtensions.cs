@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Training.Application.Attributes;
 using Training.Application.Extensions;
 using Training.Application.Proxies;
+using Training.Infraestructure.Data.Specifications;
 
 namespace Training.WebApi;
 
@@ -21,6 +22,7 @@ public static class ServicesExtensions
         Services.AddScoped<IUnitOfWork, TrainingDbContext>();
         Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         Services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+        Services.AddScoped<ISpecificationGroup, SpecificationGroup>();
 
         return Services;
     }
