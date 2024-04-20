@@ -11,6 +11,8 @@ public interface IUnitOfWork : IDisposable
     IRepository<Warehouse> WarehouseRepository { get; }
     IRepository<ProductBrand> ProductBrandRepository { get; }
     IRepository<ProductType> ProductTypeRepository { get; }
+    IRepository<Accesory> AccesoryRepository { get; }
+    IRepository<AccesoryDetail> AccesoryDetailRepository { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

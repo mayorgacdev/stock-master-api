@@ -31,6 +31,8 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public IRepository<Warehouse> WarehouseRepository => new Repository<Warehouse>(this, Mapper);
     public IRepository<ProductBrand> ProductBrandRepository => new Repository<ProductBrand>(this, Mapper);
     public IRepository<ProductType> ProductTypeRepository => new Repository<ProductType>(this, Mapper);
+    public IRepository<Accesory> AccesoryRepository => new Repository<Accesory>(this, Mapper);
+    public IRepository<AccesoryDetail> AccesoryDetailRepository => new Repository<AccesoryDetail>(this, Mapper);
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {

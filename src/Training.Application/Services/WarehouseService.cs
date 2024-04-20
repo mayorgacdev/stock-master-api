@@ -47,7 +47,8 @@ public partial class WarehouseService(
             Key(nameof(ISingleResultSpecification<Product>)).Value(SpecificationGroup.ProductSpecification));
 
         IEnumerable<ProductPicture> ProductPictures = Request.ProductPictureRequest.Select(Req => Req.AsProductPicture());
-        
+        CreateProductPriceRequest ProductPriceRequest = Request.CreateProductPriceRequest;
+
         return (await UnitOfWork.ProductRepository.AddAsync(
             Product.Create(
                 Guid.Parse(Request.SupplierId),
@@ -60,6 +61,7 @@ public partial class WarehouseService(
                 Request.ReorderLevel,
                 Request.TaxRate,
                 Request.Profit,
+                ProductPrice.For(new Money(ProductPriceRequest.Price, new Currency(ProductPriceRequest.Currency)), ProductPriceRequest.ValidFrom),
                 ProductPictures))).Id;
     }
 
@@ -95,10 +97,33 @@ public partial class WarehouseService(
     public async Task<EntityId> CreateProductTypeAsync(CreateProductTypeRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
-                       Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-                       Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
+                Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+                Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
 
         return (await UnitOfWork.ProductTypeRepository.AddAsync(
                        ProductType.Create(Request.Name))).Id;
+    }
+
+    public async Task<EntityId> CreateProductBrandAsync(CreateProductBrandRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+                Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+                Key(nameof(ISingleResultSpecification<ProductBrand>)).Value(SpecificationGroup.BrandSpecification));
+
+        return (await UnitOfWork.ProductBrandRepository.AddAsync(
+                                  ProductBrand.Create(Request.Name))).Id;
+    }
+
+    public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoryDetail(CreateAccessoryDetailRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<Accesory>)).Value(SpecificationGroup.AccesorySpecification));
+        IEnumerable<Accesory> accesories = Request.CreateAccesoriesRequest.Select(Req => Req.AsAccesory());
+
+        return (await UnitOfWork.AccesoryDetailRepository.AddRangeAsync(
+            AccesoryDetail.CreateMany(
+                Guid.Parse(Request.ProductId),
+                accesories))).AsAccesoryDetailInfo();
     }
 }

@@ -84,6 +84,7 @@ public class Product : Entity
         int reorderLevel,
         decimal tax,
         decimal profit,
+        ProductPrice productPrice,
         IEnumerable<ProductPicture> pictures)
     {
         Product Product = new()
@@ -101,6 +102,7 @@ public class Product : Entity
         };
 
         Product.ProductPictures = ProductPicture.CreateMany(Product, pictures).ToArray();
+        Product.ProductPrices.Add(ProductPrice.For(Product, productPrice.Price, productPrice.ValidFrom));
         return Product;
     }
 }

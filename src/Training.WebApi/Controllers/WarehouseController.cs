@@ -11,7 +11,6 @@ public class WarehouseController(IWarehouseService WarehouseService) : TrainingC
         return await WarehouseService.FetchProductsByFilter(Filter);
     }
 
-
     [HttpPost]
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]

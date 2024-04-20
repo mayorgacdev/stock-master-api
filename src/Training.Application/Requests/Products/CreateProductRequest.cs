@@ -15,5 +15,6 @@ public class CreateProductRequest : IRequest
     public required string SupplierId { get; set; }
     public required string WarehouseId { get; set; }
     public required decimal Profit { get; set; }
+    public required CreateProductPriceRequest CreateProductPriceRequest { get; set; } 
     public required CreateProductPictureRequest[] ProductPictureRequest { get; set; } = Array.Empty<CreateProductPictureRequest>();
 }

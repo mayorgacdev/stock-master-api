@@ -5,8 +5,6 @@ public class AccesoryDetailConfiguration : IEntityTypeConfiguration<AccesoryDeta
     public void Configure(EntityTypeBuilder<AccesoryDetail> Builder)
     {
         Builder.HasKey(Prop => new { Prop.AccesoryId, Prop.ProductId });
-        Builder.Property(Prop => Prop.Notes).HasMaxLength(100);
-
         Builder.ToTable(nameof(AccesoryDetail));
     }
 }

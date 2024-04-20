@@ -18,8 +18,8 @@ public class AsyncBrandNotExist<TRequest> : AsyncPropertyValidator<TRequest, str
         var Specification = Context.RootContextData[nameof(ISingleResultSpecification<ProductBrand>)].As<ISingleResultSpecification<ProductBrand>>();
         Specification?.Query.ByName(Value);
 
-        var Warehouse = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductBrandRepository.FirstOrDefaultAsync(Specification!, Cancellation);
-        return Warehouse is null;
+        var ProducBrand = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductBrandRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+        return ProducBrand is null;
     }
 
     protected override string GetDefaultMessageTemplate(string ErrorCode)

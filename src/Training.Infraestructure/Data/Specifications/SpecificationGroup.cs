@@ -10,4 +10,5 @@ public partial class SpecificationGroup : ISpecificationGroup
     public ISingleResultSpecification<ProductBrand> BrandSpecification { get; } = new SingleResultSpecification<ProductBrand>();
     public ISingleResultSpecification<ProductType> ProductTypeSpecification { get; } = new SingleResultSpecification<ProductType>();
     public ISingleResultSpecification<Supplier> SupplierSpecification { get;} = new SingleResultSpecification<Supplier>();
+    public ISingleResultSpecification<Accesory> AccesorySpecification { get; } = new SingleResultSpecification<Accesory>();
 }

@@ -147,4 +147,7 @@
   <data name="SERVC0010" xml:space="preserve">
     <value>The Supplier exist, create a new one</value>
   </data>
+  <data name="SERVC0011" xml:space="preserve">
+    <value>Accesory already exist, create another with unique name</value>
+  </data>
 </root>

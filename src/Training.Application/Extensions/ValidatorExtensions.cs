@@ -36,4 +36,7 @@ public static class ValidatorExtensions
 
     public static IRuleBuilderOptions<T, string> ProductTypeNotExistAsync<T>(this IRuleBuilder<T, string> RuleBuilder)
         => RuleBuilder.SetAsyncValidator(new AsyncTypeNotExist<T>());
+
+    public static IRuleBuilderOptions<T, IEnumerable<CreateAccesoryRequest>> AccesoriesNotExistAsync<T>(this IRuleBuilder<T, IEnumerable<CreateAccesoryRequest>> RuleBuilder)
+        => RuleBuilder.SetAsyncValidator(new AsyncAccesoryNotExistAsync<T>());
 }

@@ -1,5 +1,8 @@
 ﻿namespace Training.Application.Requests.Warehouse;
 
+using Training.Application.Attributes;
+
+[Validator<CreateWarehouseValidator>]
 public class CreateWarehouseRequest : IRequest
 {
     public string Name { get; private set; } = string.Empty;
