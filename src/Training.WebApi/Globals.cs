@@ -18,3 +18,4 @@ global using Training.Application.Requests;
 global using Training.Application.Sales.Requests.Customers;
 global using Training.Domain.Common;
 global using Training.Application.Requests.Products;
+global using Training.Application.Requests.Warehouse;

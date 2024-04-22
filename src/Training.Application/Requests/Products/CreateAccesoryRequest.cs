@@ -15,18 +15,3 @@ public class CreateAccesoryRequest : IRequest
     public required int Stock { get; set; }
     public required string Currency { get; set; }
 }
-
-public static class MappingAccesoryExtensions
-{
-    public static Accesory AsAccesory(this CreateAccesoryRequest request)
-        => Accesory.Create(
-            new Domain.Common.Money(request.Price,
-                new Domain.Common.Currency(request.Currency)),
-            new Domain.Common.Money(request.PurchaseAmount,
-                new Domain.Common.Currency(request.Currency)),
-            request.Stock, 
-            request.Name, 
-            request.Description, 
-            request.Notes, 
-            request.IsActive);
-}

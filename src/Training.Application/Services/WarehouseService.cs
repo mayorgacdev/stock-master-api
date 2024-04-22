@@ -18,7 +18,7 @@ using Training.Application.Requests.Warehouse;
 
 [GenerateAutomaticInterface]
 [Service<IWarehouseService>]
-[ErrorCategory(nameof(CustomerService))]
+[ErrorCategory(nameof(WarehouseService))]
 [ErrorCodePrefix(WarehouseServicePrefix)]
 public partial class WarehouseService(
     IUnitOfWork UnitOfWork, 
@@ -40,6 +40,7 @@ public partial class WarehouseService(
             .ProjectToListAsync<ProductInfo>(SpecificationGroup.ProductSpecification, Filter, default);
     }
 
+    [MethodId("AAF3F35D-3BEA-4263-8891-167A90A528C0")]
     public async Task<EntityId> CreateProductAsync(CreateProductRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
@@ -61,10 +62,13 @@ public partial class WarehouseService(
                 Request.ReorderLevel,
                 Request.TaxRate,
                 Request.Profit,
-                ProductPrice.For(new Money(ProductPriceRequest.Price, new Currency(ProductPriceRequest.Currency)), ProductPriceRequest.ValidFrom),
+                ProductPrice.For(
+                    new Money(ProductPriceRequest.Price,
+                    new Currency(ProductPriceRequest.Currency)), ProductPriceRequest.ValidFrom),
                 ProductPictures))).Id;
     }
 
+    [MethodId("B5C4247F-D984-46C4-B6DD-FA2E9F5C25BC")]
     public async Task<EntityId> CreateSupplierAsync(CreateSupplierRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
@@ -79,6 +83,7 @@ public partial class WarehouseService(
                 Request.Phone))).Id;
     }
 
+    [MethodId("381B1260-3CE2-443D-B801-B9741199C51C")]
     public async Task<EntityId> CreateWarehouseAsync(CreateWarehouseRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
@@ -94,36 +99,91 @@ public partial class WarehouseService(
                 Request.Capacity))).Id;
     }
 
+    [MethodId("4C8C2991-FB9C-461A-ABAD-3B30A53989D8")]
     public async Task<EntityId> CreateProductTypeAsync(CreateProductTypeRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
-                Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-                Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
 
-        return (await UnitOfWork.ProductTypeRepository.AddAsync(
-                       ProductType.Create(Request.Name))).Id;
+        return (await UnitOfWork.ProductTypeRepository.AddAsync(ProductType.Create(Request.Name))).Id;
     }
 
+    [MethodId("7D26DAF8-DC31-4452-9DA9-88C2DB25A1E1")]
     public async Task<EntityId> CreateProductBrandAsync(CreateProductBrandRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
-                Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-                Key(nameof(ISingleResultSpecification<ProductBrand>)).Value(SpecificationGroup.BrandSpecification));
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISingleResultSpecification<ProductBrand>)).Value(SpecificationGroup.BrandSpecification));
 
-        return (await UnitOfWork.ProductBrandRepository.AddAsync(
-                                  ProductBrand.Create(Request.Name))).Id;
+        return (await UnitOfWork.ProductBrandRepository.AddAsync(ProductBrand.Create(Request.Name))).Id;
     }
 
-    public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoryDetail(CreateAccessoryDetailRequest Request)
+    [MethodId("779E6415-6DD9-430D-A7FE-433CF2D850E6")]
+    public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoryDetailAsync(CreateAccessoryDetailRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
             Key(nameof(ISingleResultSpecification<Accesory>)).Value(SpecificationGroup.AccesorySpecification));
-        IEnumerable<Accesory> accesories = Request.CreateAccesoriesRequest.Select(Req => Req.AsAccesory());
+        
+        IEnumerable<Accesory> Accesories = Request.CreateAccesoriesRequest.Select(Req => Req.AsAccesory());
 
-        return (await UnitOfWork.AccesoryDetailRepository.AddRangeAsync(
-            AccesoryDetail.CreateMany(
-                Guid.Parse(Request.ProductId),
-                accesories))).AsAccesoryDetailInfo();
+        return (await UnitOfWork.AccesoryDetailRepository.AddRangeAsync
+            (AccesoryDetail.CreateMany(
+                Guid.Parse(Request.ProductId), Accesories))).
+                AsAccesoryDetailInfo();
     }
+    
+    [MethodId("997A0D1C-EA7E-4EA1-8D63-9E6D502088D0")]
+    public Task<PagedResponse<ProductBrandInfo>> FetchProductBrandsAsync(ProductBrandFilter ProductBrandFilter)
+    {
+        SpecificationGroup.BrandSpecification.Query
+            .ByName(ProductBrandFilter.Name)
+            .ApplyOrdering(ProductBrandFilter);
+
+        return UnitOfWork.ProductBrandReadRepository
+            .ProjectToListAsync<ProductBrandInfo>(SpecificationGroup.BrandSpecification, ProductBrandFilter, default);
+    }
+
+    [MethodId("B7A172E0-C4C9-40A5-9736-67DA9EBC9119")]
+    public Task<PagedResponse<ProductTypeInfo>> FetchProductTypesAsync(ProductTypeFilter Filter)
+    {
+        SpecificationGroup.ProductTypeSpecification.Query.Where(e => e.Name.Contains(Filter.Name ?? string.Empty));
+
+        return UnitOfWork.ProductTypeReadRepository
+            .ProjectToListAsync<ProductTypeInfo>(SpecificationGroup.ProductTypeSpecification, Filter, default);
+    }
+
+    [MethodId("24862812-4D54-4B79-9B26-751B38764ECC")]
+    public Task<PagedResponse<SupplierInfo>> FetchSuppliersAsync(SupplierFilter Filter)
+    {
+        SpecificationGroup.SupplierSpecification.Query
+            .ApplyOrdering(Filter);
+
+        return UnitOfWork.SupplierReadRepository
+            .ProjectToListAsync<SupplierInfo>(SpecificationGroup.SupplierSpecification, Filter, default);
+    }
+
+    [MethodId("3A6BF993-EEA5-471C-9822-75EAA505AE10")]
+    public Task<PagedResponse<WarehouseInfo>> FetchWarehousesAsync(WarehouseFilter Filter)
+    {
+        SpecificationGroup.WarehouseSpecification.Query
+            .ApplyOrdering(Filter);
+
+        return UnitOfWork.WarehouseReadRepository
+            .ProjectToListAsync<WarehouseInfo>(SpecificationGroup.WarehouseSpecification, Filter, default);
+    }
+
+    [MethodId("764811A5-EDE1-44BF-97CF-E315687005F3")]
+    public Task<PagedResponse<AccesoryInfo>> FetchAccesoriesAsync(AccesoryFilter Filter)
+    {
+        SpecificationGroup.AccesorySpecification.Query
+            .ByName(Filter.Name)
+            .ById(Filter.Id)
+            .ApplyOrdering(Filter);
+
+        return UnitOfWork.AccesoryReadRepository
+            .ProjectToListAsync<AccesoryInfo>(SpecificationGroup.AccesorySpecification, Filter, default);
+    }
+
 }

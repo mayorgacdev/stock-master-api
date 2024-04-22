@@ -54,6 +54,7 @@ public static class ProductSpecExtensions
     public static ISpecificationBuilder<Product> IncludeAll(this ISpecificationBuilder<Product> Builder)
         => Builder.Include(Prop => Prop.Supplier)
             .Include(Prop => Prop.Warehouse)
+            .Include(Prop => Prop.ProductPrices)
             .Include(Prop => Prop.ProductBrand)
             .Include(Prop => Prop.ProductType)
             .Include(Prop => Prop.ProductPictures);

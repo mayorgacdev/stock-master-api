@@ -33,6 +33,13 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public IRepository<ProductType> ProductTypeRepository => new Repository<ProductType>(this, Mapper);
     public IRepository<Accesory> AccesoryRepository => new Repository<Accesory>(this, Mapper);
     public IRepository<AccesoryDetail> AccesoryDetailRepository => new Repository<AccesoryDetail>(this, Mapper);
+    public IReadRepository<ProductPicture> ProductPictureReadRepository => new ReadRepository<ProductPicture>(this, Mapper);
+    public IReadRepository<Supplier> SupplierReadRepository => new ReadRepository<Supplier>(this, Mapper);
+    public IReadRepository<Warehouse> WarehouseReadRepository => new ReadRepository<Warehouse>(this, Mapper);
+    public IReadRepository<ProductBrand> ProductBrandReadRepository => new ReadRepository<ProductBrand>(this, Mapper);
+    public IReadRepository<ProductType> ProductTypeReadRepository => new ReadRepository<ProductType>(this, Mapper);
+    public IReadRepository<Accesory> AccesoryReadRepository => new ReadRepository<Accesory>(this, Mapper);
+    public IReadRepository<AccesoryDetail> AccesoryDetailReadRepository => new ReadRepository<AccesoryDetail>(this, Mapper);
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {

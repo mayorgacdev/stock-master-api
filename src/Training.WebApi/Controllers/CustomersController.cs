@@ -11,7 +11,7 @@ public class CustomersController(ICustomerService CustomerService) : TrainingCon
         return await CustomerService.FetchCustomersByFilter(Filter);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateCustomer")]
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
