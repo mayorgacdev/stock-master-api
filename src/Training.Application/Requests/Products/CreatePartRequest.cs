@@ -1,9 +1,6 @@
 ﻿namespace Training.Application.Requests.Products;
 
-using Training.Application.Attributes;
-
-[Validator<CreateAccesoryValidator>]
-public class CreateAccesoryRequest : IRequest
+public class CreatePartRequest : IRequest
 {
     public required string Name { get; set; }
     public required string Description { get; set; }

@@ -45,7 +45,7 @@ public partial class WarehouseService(
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<Product>)).Value(SpecificationGroup.ProductSpecification));
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
         IEnumerable<ProductPicture> ProductPictures = Request.ProductPictureRequest.Select(Req => Req.AsProductPicture());
         CreateProductPriceRequest ProductPriceRequest = Request.CreateProductPriceRequest;
@@ -62,7 +62,7 @@ public partial class WarehouseService(
                 Request.ReorderLevel,
                 Request.TaxRate,
                 Request.Profit,
-                ProductPrice.For(
+                ProductPrice.ForNew(
                     new Money(ProductPriceRequest.Price,
                     new Currency(ProductPriceRequest.Currency)), ProductPriceRequest.ValidFrom),
                 ProductPictures))).Id;
@@ -73,7 +73,7 @@ public partial class WarehouseService(
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<Supplier>)).Value(SpecificationGroup.SupplierSpecification));
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
         return (await UnitOfWork.SupplierRepository.AddAsync(
             Supplier.Create(
@@ -88,7 +88,7 @@ public partial class WarehouseService(
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<Warehouse>)).Value(SpecificationGroup.WarehouseSpecification));
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
         return (await UnitOfWork.WarehouseRepository.AddAsync(
             Warehouse.Create(
@@ -104,7 +104,7 @@ public partial class WarehouseService(
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<ProductType>)).Value(SpecificationGroup.ProductTypeSpecification));
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
         return (await UnitOfWork.ProductTypeRepository.AddAsync(ProductType.Create(Request.Name))).Id;
     }
@@ -114,18 +114,52 @@ public partial class WarehouseService(
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<ProductBrand>)).Value(SpecificationGroup.BrandSpecification));
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
         return (await UnitOfWork.ProductBrandRepository.AddAsync(ProductBrand.Create(Request.Name))).Id;
     }
+
+    [MethodId("DCA52B2F-0526-4D08-A079-65DEC710F4D6")]
+    public async Task<EntityId> CreateAccesoryAsync(CreateAccesoryRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
+
+        return (await UnitOfWork.AccesoryRepository.AddAsync(
+            Accesory.Create
+            (
+                new Money(Request.Price, new Currency(Request.Currency)), 
+                new Money(Request.PurchaseAmount, new Currency(Request.Currency)), 
+                Request.Stock, 
+                Request.Name, 
+                Request.Description, 
+                Request.Notes, 
+                Request.IsActive))
+            ).Id;
+    }
+
+    //public async Task<IEnumerable<Guid>> CreateAccesoryWithPartsAsync(CreateAccesoryWithPartsRequest Request)
+    //{
+    //    await Request.ValidateAndThrowOnFailuresAsync(
+    //        Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+    //        Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
+
+    //    IEnumerable<Part> AccesoryParts = Request.Parts.Select(Req => Req.AsPart());
+
+    //    return (await UnitOfWork.PartRepository.AddRangeAsync
+    //        (PartDetail.CreateMany(
+    //            Guid.Parse(Request.ProductId), Accesories))).
+    //            AsAccesoryDetailInfo();
+    //}
 
     [MethodId("779E6415-6DD9-430D-A7FE-433CF2D850E6")]
     public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoryDetailAsync(CreateAccessoryDetailRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-            Key(nameof(ISingleResultSpecification<Accesory>)).Value(SpecificationGroup.AccesorySpecification));
-        
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
+
         IEnumerable<Accesory> Accesories = Request.CreateAccesoriesRequest.Select(Req => Req.AsAccesory());
 
         return (await UnitOfWork.AccesoryDetailRepository.AddRangeAsync

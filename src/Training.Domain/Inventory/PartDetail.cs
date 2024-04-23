@@ -15,5 +15,7 @@ public class PartDetail
             AccesoryId = accesoryId,
             PartId = accesoryPartId
         };
+
+    //public static IEnumerable<PartDetail> CreateMany(Guid )
 }
 

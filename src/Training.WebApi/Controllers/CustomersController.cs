@@ -21,3 +21,5 @@ public class CustomersController(ICustomerService CustomerService) : TrainingCon
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 }
+
+// Path: src/Training.WebApi/Controllers/CustomersController.cs

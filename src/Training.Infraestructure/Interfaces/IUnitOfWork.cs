@@ -26,9 +26,11 @@ public interface IUnitOfWork : IDisposable
     IRepository<Accesory> AccesoryRepository { get; }
     IReadRepository<Accesory> AccesoryReadRepository { get; }
 
-
     IRepository<AccesoryDetail> AccesoryDetailRepository { get; }
     IReadRepository<AccesoryDetail> AccesoryDetailReadRepository { get; }
+
+    IRepository<Part> PartRepository { get; }
+    IReadRepository<Part> PartReadRepository { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

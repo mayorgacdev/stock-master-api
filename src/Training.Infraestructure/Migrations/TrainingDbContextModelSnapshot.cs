@@ -65,6 +65,9 @@ namespace Training.Infraestructure.Migrations
                         .HasColumnType("decimal(18, 2)")
                         .HasColumnName("PurchaseAmount");
 
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -82,11 +85,6 @@ namespace Training.Infraestructure.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("AccesoryId", "ProductId");
 
@@ -154,11 +152,6 @@ namespace Training.Infraestructure.Migrations
 
                     b.Property<Guid>("IX_PartDetails_Part_PartId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("PartId", "AccesoryId");
 
@@ -367,7 +360,7 @@ namespace Training.Infraestructure.Migrations
 
                     b.HasIndex("InvoiceLineProductId", "InvoiceLineInvoiceRecordId");
 
-                    b.ToTable("ProductReturn");
+                    b.ToTable("ProductReturns");
                 });
 
             modelBuilder.Entity("Training.Domain.Inventory.ProductType", b =>

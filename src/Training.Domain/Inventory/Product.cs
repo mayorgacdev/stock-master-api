@@ -5,13 +5,13 @@
 /// </summary>
 public class Product : Entity
 {
-    private Product() 
+    private Product()
     {
         ProductPrices = new HashSet<ProductPrice>();
         ProductPictures = new HashSet<ProductPicture>();
         AccesoryDetails = new HashSet<AccesoryDetail>();
     }
-    
+
     /// <summary>
     /// Gets the name of the product.
     /// </summary>
@@ -35,7 +35,7 @@ public class Product : Entity
     /// Gets the unique identifier of the brand of the product.
     /// </summary>
     public Guid ProductBrandId { get; private set; }
-    
+
     public ProductBrand ProductBrand { get; private set; } = default!;
     /// <summary>
     /// Gets the unique identifier of the type of the product.

@@ -5,13 +5,13 @@ using Training.Application.Attributes;
 [Validator<CreateWarehouseValidator>]
 public class CreateWarehouseRequest : IRequest
 {
-    public string Name { get; private set; } = string.Empty;
+    public required string Name { get; set; }
 
-    public string State { get; set; } = string.Empty;
+    public required string State { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public required string City { get; set; }
 
-    public int Capacity { get; set; } = 0;
+    public required int Capacity { get; set; }
 
-    public int Max { get; set; } = 0;
+    public required int Max { get; set; }
 }

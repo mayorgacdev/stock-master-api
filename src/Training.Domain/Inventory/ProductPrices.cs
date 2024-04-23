@@ -66,7 +66,13 @@ public class ProductPrice : Entity
             ValidFrom = ValidFrom
         };
 
-    public static ProductPrice For(Money Price, DateTime ValidFrom) => For(Price, ValidFrom);
+    public static ProductPrice ForNew(Money Price, DateTime ValidFrom) 
+        => new()
+        {
+            Id = Guid.NewGuid(),
+            Price = Price,
+            ValidFrom = ValidFrom
+        };
 
 
 }

@@ -15,10 +15,13 @@ public class AsyncSupplierExistValidator<TRequest> : AsyncPropertyValidator<TReq
 
     public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
-        var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.BySupplierId(Guid.Parse(Value));
+        var Specification = Context.RootContextData[nameof(ISpecificationGroup)].As<SpecificationGroup>();
+        var SingleSupplierSpecification = Specification!.SupplierSpecification;
+        SingleSupplierSpecification.Query.ById(Value);
 
-        var Supplier = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+        var Supplier = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!
+            .SupplierReadRepository.FirstOrDefaultAsync(SingleSupplierSpecification!, Cancellation);
+
         return Supplier is not null;
     }
 

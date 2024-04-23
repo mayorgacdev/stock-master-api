@@ -32,4 +32,8 @@ public static class SupplierSpecExtensions
 
     public static ISpecificationBuilder<Supplier> IncludeAll(this ISpecificationBuilder<Supplier> Builder)
         => Builder.Include(Prop => Prop.Products);  
+
+    // BY ID
+    public static ISpecificationBuilder<Supplier> ById(this ISpecificationBuilder<Supplier> Builder, string? Id)
+        => (Id is not null) ? Builder.Where(Prop => Prop.Id == Guid.Parse(Id)) : Builder;
 }

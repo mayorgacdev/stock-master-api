@@ -20,6 +20,7 @@ namespace Training.Infraestructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
                     PurchaseAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -180,7 +181,6 @@ namespace Training.Infraestructure.Migrations
                 {
                     AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IX_PartDetails_Part_PartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -292,8 +292,7 @@ namespace Training.Infraestructure.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    AccesoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -388,7 +387,7 @@ namespace Training.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductReturn",
+                name: "ProductReturns",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -404,9 +403,9 @@ namespace Training.Infraestructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductReturn", x => x.Id);
+                    table.PrimaryKey("PK_ProductReturns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductReturn_InvoiceLines_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
+                        name: "FK_ProductReturns_InvoiceLines_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
                         columns: x => new { x.InvoiceLineProductId, x.InvoiceLineInvoiceRecordId },
                         principalTable: "InvoiceLines",
                         principalColumns: new[] { "ProductId", "InvoiceRecordId" },
@@ -482,8 +481,8 @@ namespace Training.Infraestructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductReturn_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
-                table: "ProductReturn",
+                name: "IX_ProductReturns_InvoiceLineProductId_InvoiceLineInvoiceRecordId",
+                table: "ProductReturns",
                 columns: new[] { "InvoiceLineProductId", "InvoiceLineInvoiceRecordId" });
 
             migrationBuilder.CreateIndex(
@@ -547,7 +546,7 @@ namespace Training.Infraestructure.Migrations
                 name: "ProductPrice");
 
             migrationBuilder.DropTable(
-                name: "ProductReturn");
+                name: "ProductReturns");
 
             migrationBuilder.DropTable(
                 name: "Part");

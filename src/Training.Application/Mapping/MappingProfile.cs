@@ -1,5 +1,6 @@
 ﻿namespace Training.Application.Mapping;
 
+using Azure.Core;
 using Training.Application.Requests;
 using Training.Application.Requests.Products;
 using Training.Application.Sales.Requests.Customers;
@@ -16,6 +17,11 @@ public class MappingProfile : Profile
 
         CreateMap<Supplier, SupplierInfo>().ReverseMap();
         CreateMap<ProductBrand, ProductBrandInfo>().ReverseMap();
+        CreateMap<ProductPrice, ProductPriceInfo>()
+            .ForMember(Prop => Prop.Price, Opt => Opt.MapFrom(Prop => Prop.Price.Amount)).ReverseMap();
+
+        CreateMap<ProductPicture, PictureInfo>().ReverseMap();
+
         CreateMap<Warehouse, WarehouseInfo>().ReverseMap();
         CreateMap<ProductType, ProductTypeInfo>().ReverseMap();
         CreateMap<Accesory, AccesoryInfo>().ForMember(Prop => Prop.PurchasePrice, Opt => Opt.MapFrom(Prop 
@@ -27,7 +33,8 @@ public class MappingProfile : Profile
             .ForMember(Prop => Prop.BrandInfo, Opt => Opt.MapFrom(Prop => Prop.ProductBrand))
             .ForMember(Prop => Prop.WarehouseInfo, Opt => Opt.MapFrom(Prop => Prop.Warehouse))
             .ForMember(Prop => Prop.ProductTypeInfo, Opt => Opt.MapFrom(Prop => Prop.ProductType))
-            .ForMember(Prop => Prop.PriceInfo, Opt => Opt.MapFrom(Prop => Prop.ProductPrices.ToArray()));
+            .ForMember(Prop => Prop.PriceInfo, Opt => Opt.MapFrom(Prop => Prop.ProductPrices))
+            .ForMember(Prop => Prop.Pictures, Opt => Opt.MapFrom(Prop => Prop.ProductPictures));
     }
 }
 
@@ -53,4 +60,14 @@ public static class BasicMappingExtensions
             request.Description,
             request.Notes,
             request.IsActive);
+
+    public static Part AsPart(this CreatePartRequest Request)
+        => Part.Create(
+            new Domain.Common.Money(Request.Price,
+                new Domain.Common.Currency(Request.Currency)),
+            new Domain.Common.Money(Request.PurchaseAmount, 
+                new Domain.Common.Currency(Request.Currency)), 
+            Request.Name, 
+            Request.Description, 
+            Request.IsActive);
 }

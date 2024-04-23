@@ -20,4 +20,8 @@ public static class ProductBrandSpecExtensions
 
     public static ISpecificationBuilder<ProductBrand> ByName(this ISpecificationBuilder<ProductBrand> Builder, string? Name)
         => (Name is not null) ? Builder.Where(Prop => Prop.Name.Contains(Name)) : Builder;
+
+    //BY ID
+    public static ISpecificationBuilder<ProductBrand> ById(this ISpecificationBuilder<ProductBrand> Builder, string? Id)
+        => (Id is not null) ? Builder.Where(Prop => Prop.Id == Guid.Parse(Id)) : Builder;
 }

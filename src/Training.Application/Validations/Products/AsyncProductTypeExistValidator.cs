@@ -15,11 +15,12 @@ public class AsyncProductTypeExistValidator<TRequest> : AsyncPropertyValidator<T
 
     public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
-        var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.ByProductTypeId(Guid.Parse(Value));
+        var Specification = Context.RootContextData[nameof(ISpecificationGroup)].As<SpecificationGroup>();
+        var SingleProductTypeSpecification = Specification!.ProductTypeSpecification;
+        SingleProductTypeSpecification.Query.ById(Value);
 
         var ProductType = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.
-            ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+            ProductTypeReadRepository.FirstOrDefaultAsync(SingleProductTypeSpecification!, Cancellation);
         
         return ProductType is not null;
     }

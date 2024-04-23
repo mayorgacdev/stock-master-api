@@ -15,10 +15,11 @@ public class AsyncProductBrandExistValidator<TRequest> : AsyncPropertyValidator<
 
     public override async Task<bool> IsValidAsync(ValidationContext<TRequest> Context, string Value, CancellationToken Cancellation)
     {
-        var Specification = Context.RootContextData[nameof(ISingleResultSpecification<Product>)].As<ISingleResultSpecification<Product>>();
-        Specification?.Query.ByBrandId(Guid.Parse(Value));
+        var Specification = Context.RootContextData[nameof(ISpecificationGroup)].As<SpecificationGroup>();
+        var SingleProductBrandSpecification = Specification!.BrandSpecification;
+        SingleProductBrandSpecification.Query.ById(Value);
 
-        var ProductBrand = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductReadRepository.FirstOrDefaultAsync(Specification!, Cancellation);
+        var ProductBrand = await Context.RootContextData[nameof(IUnitOfWork)].As<IUnitOfWork>()!.ProductBrandReadRepository.FirstOrDefaultAsync(SingleProductBrandSpecification!, Cancellation);
         return ProductBrand is not null;
     }
 
