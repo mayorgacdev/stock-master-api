@@ -2,11 +2,11 @@
 
 using FluentValidation;
 
-public class CreateAccesoryWithPartsValidator : AbstractValidator<CreateAccesoryWithPartsRequest>
+public class CreateAccesoryWithPartsValidator : AbstractValidator<CreatePartsForAccesoryRequest>
 {
     public CreateAccesoryWithPartsValidator()
     {
-        RuleFor(x => x.Id).ProductExistAsync().NotEmpty();
+        RuleFor(x => x.AccesoryId).NotEmpty();
         RuleFor(x => x.Parts).PartsNotExistAsync().NotEmpty();
     }
 }

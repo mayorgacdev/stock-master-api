@@ -1,8 +1,6 @@
 ﻿namespace Training.WebApi.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class WarehouseController(IWarehouseService WarehouseService) : ControllerBase
+public class WarehouseController(IWarehouseService WarehouseService) : TrainingControllerBase
 {
     [HttpGet("FetchProducts")]
     [ProducesResponseType(typeof(PagedResponse<ProductInfo>), StatusCodes.Status200OK)]
@@ -62,9 +60,9 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateProductAsync([FromBody] CreateProductRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateProductAsync([FromBody] CreateProductRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateProductAsync(request);
+        var ServiceResult = await WarehouseService.CreateProductAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
@@ -72,9 +70,9 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateSupplierAsync([FromBody] CreateSupplierRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateSupplierAsync([FromBody] CreateSupplierRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateSupplierAsync(request);
+        var ServiceResult = await WarehouseService.CreateSupplierAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
@@ -83,9 +81,9 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateProductTypeAsync([FromBody] CreateProductTypeRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateProductTypeAsync([FromBody] CreateProductTypeRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateProductTypeAsync(request);
+        var ServiceResult = await WarehouseService.CreateProductTypeAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
@@ -93,9 +91,9 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateWarehouseAsync([FromBody] CreateWarehouseRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateWarehouseAsync([FromBody] CreateWarehouseRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateWarehouseAsync(request);
+        var ServiceResult = await WarehouseService.CreateWarehouseAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
@@ -103,9 +101,19 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateProductBrandAsync([FromBody] CreateProductBrandRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateProductBrandAsync([FromBody] CreateProductBrandRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateProductBrandAsync(request);
+        var ServiceResult = await WarehouseService.CreateProductBrandAsync(Request);
+        return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
+    }
+
+    [HttpPost("CreateAccesoriesForProduct")]
+    [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
+    [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
+    public async Task<ActionResult<IResponse<EntityId>>> CreateAccesoriesForProduct([FromBody] CreateAccessoryDetailRequest Request)
+    {
+        var ServiceResult = await WarehouseService.CreateAccesoriesForProductAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
@@ -113,12 +121,19 @@ public class WarehouseController(IWarehouseService WarehouseService) : Controlle
     [ProducesResponseType(typeof(IResponse<EntityId>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
     [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
-    public async Task<ActionResult<IResponse<EntityId>>> CreateAccesoryAsync([FromBody] CreateAccessoryDetailRequest request)
+    public async Task<ActionResult<IResponse<EntityId>>> CreateAccesoryAsync([FromBody] CreateAccesoryRequest Request)
     {
-        var ServiceResult = await WarehouseService.CreateAccesoryDetailAsync(request);
+        var ServiceResult = await WarehouseService.CreateAccesoryAsync(Request);
         return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
     }
 
+    [HttpPost("CreatePartsForAccesory")]
+    [ProducesResponseType(typeof(IResponse<IEnumerable<Guid>>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(IResponse<ErrorResponse>), StatusCodes.Status500InternalServerError)]
+    [ProducesErrorResponseType(typeof(IResponse<ErrorResponse>))]
+    public async Task<ActionResult<IResponse<EntityId>>> CreatePartsForAccesoryAsync([FromBody] CreatePartsForAccesoryRequest Request)
+    {
+        var ServiceResult = await WarehouseService.CreatePartsForAccesoryAsync(Request);
+        return StatusCode(StatusCodes.Status201Created, await ServiceResult.ToResponseAsync());
+    }
 }
-
-//Path: src/Training.WebApi/Controllers/WarehouseController.cs

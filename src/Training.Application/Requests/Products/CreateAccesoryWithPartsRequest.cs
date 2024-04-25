@@ -3,8 +3,8 @@
 namespace Training.Application.Requests.Products;
 
 [Validator<CreateAccesoryWithPartsValidator>]
-public class CreateAccesoryWithPartsRequest : IRequest
+public class CreatePartsForAccesoryRequest : IRequest
 {
-    public required string Id { get; set; }
+    public required string AccesoryId { get; set; }
     public required CreatePartRequest[] Parts { get; set; }
 }

@@ -9,13 +9,14 @@ public class PartDetail
     public Part Part { get; set; } = null!;
     public Accesory Accesory { get; set; } = null!;
 
-    public static PartDetail Create(Guid accesoryId, Guid accesoryPartId)
+    public static PartDetail Create(Guid accesoryId, Part partId)
         => new()
         {
             AccesoryId = accesoryId,
-            PartId = accesoryPartId
+            Part = partId
         };
 
-    //public static IEnumerable<PartDetail> CreateMany(Guid )
+    public static IEnumerable<PartDetail> CreateMany(Guid accesoryId, IEnumerable<Part> parts)
+        => parts.Select(part => Create(accesoryId, part));
 }
 

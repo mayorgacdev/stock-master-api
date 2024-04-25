@@ -46,7 +46,7 @@ public static class BasicMappingExtensions
 
     public static IEnumerable<AccesoryDetailInfo> AsAccesoryDetailInfo(this IEnumerable<AccesoryDetail> request)
         => request.Select(req => AccesoryDetailInfo.Create(
-            request.ElementAt(0).ProductId,
+            request.SingleOrDefault()!.ProductId,
             request.Select(e => e.AccesoryId)));
 
     public static Accesory AsAccesory(this CreateAccesoryRequest request)

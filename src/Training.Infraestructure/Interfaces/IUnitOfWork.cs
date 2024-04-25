@@ -32,5 +32,8 @@ public interface IUnitOfWork : IDisposable
     IRepository<Part> PartRepository { get; }
     IReadRepository<Part> PartReadRepository { get; }
 
+    IRepository<PartDetail> PartDetailRepository { get; }
+    IReadRepository<PartDetail> PartDetailReadRepository { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

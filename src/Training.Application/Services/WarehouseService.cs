@@ -139,22 +139,24 @@ public partial class WarehouseService(
             ).Id;
     }
 
-    //public async Task<IEnumerable<Guid>> CreateAccesoryWithPartsAsync(CreateAccesoryWithPartsRequest Request)
-    //{
-    //    await Request.ValidateAndThrowOnFailuresAsync(
-    //        Key(nameof(IUnitOfWork)).Value(UnitOfWork).
-    //        Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
+    [MethodId("F9CA514C-4C97-49AE-AB41-FE5EE6D761D3")]
+    public async Task<IEnumerable<Guid>> CreatePartsForAccesoryAsync(CreatePartsForAccesoryRequest Request)
+    {
+        await Request.ValidateAndThrowOnFailuresAsync(
+            Key(nameof(IUnitOfWork)).Value(UnitOfWork).
+            Key(nameof(ISpecificationGroup)).Value(SpecificationGroup));
 
-    //    IEnumerable<Part> AccesoryParts = Request.Parts.Select(Req => Req.AsPart());
+        IEnumerable<Part> Parts = Request.Parts.Select(Req => Req.AsPart());
 
-    //    return (await UnitOfWork.PartRepository.AddRangeAsync
-    //        (PartDetail.CreateMany(
-    //            Guid.Parse(Request.ProductId), Accesories))).
-    //            AsAccesoryDetailInfo();
-    //}
+        var Result = (await UnitOfWork.PartDetailRepository.AddRangeAsync
+            (PartDetail.CreateMany(
+                Guid.Parse(Request.AccesoryId), Parts)));
+
+        return Result.Select(e => e.PartId);
+    }
 
     [MethodId("779E6415-6DD9-430D-A7FE-433CF2D850E6")]
-    public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoryDetailAsync(CreateAccessoryDetailRequest Request)
+    public async Task<IEnumerable<AccesoryDetailInfo>> CreateAccesoriesForProductAsync(CreateAccessoryDetailRequest Request)
     {
         await Request.ValidateAndThrowOnFailuresAsync(
             Key(nameof(IUnitOfWork)).Value(UnitOfWork).

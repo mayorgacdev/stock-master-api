@@ -40,6 +40,10 @@ public class TrainingDbContext(DbContextOptions<TrainingDbContext> Options, IMap
     public IReadRepository<ProductType> ProductTypeReadRepository => new ReadRepository<ProductType>(this, Mapper);
     public IReadRepository<Accesory> AccesoryReadRepository => new ReadRepository<Accesory>(this, Mapper);
     public IReadRepository<AccesoryDetail> AccesoryDetailReadRepository => new ReadRepository<AccesoryDetail>(this, Mapper);
+    public IRepository<Part> PartRepository => new Repository<Part>(this, Mapper);
+    public IReadRepository<Part> PartReadRepository => new ReadRepository<Part>(this, Mapper);
+    public IRepository<PartDetail> PartDetailRepository => new Repository<PartDetail>(this, Mapper);
+    public IReadRepository<PartDetail> PartDetailReadRepository => new ReadRepository<PartDetail>(this, Mapper);
 
     protected override void OnModelCreating(ModelBuilder ModelBuilder)
     {
